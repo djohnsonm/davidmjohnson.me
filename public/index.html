@@ -116,6 +116,296 @@
 
     </article>
   
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2011/08/11/getting-started-with-f-number/">Getting Started With F#</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-08-11T15:38:00-05:00" pubdate data-updated="true">Aug 11<span>th</span>, 2011</time>
+        
+         | <a href="/blog/2011/08/11/getting-started-with-f-number/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h2>What is F#?</h2>
+
+<p>F# is a multi-paradigm programming language combining functional, OOP and imperative styles. It is based on the ML variant of languages and is most closely related to OCaml. It is a strongly-typed language that utilizes type inference to resolve data-types at runtime. With the release of Visual Studio 2010, F# is now a first class citizen of the .NET Platform and fully compatible with most .NET libraries (including but not limited to WCF, WPF, XNA). F# is a great example of a specific type of programming called “functional programming.” The functional programming genre seeks to describe more of the “what” and less of the “how” in regards to programming. C# is slowly including more functional aspects into it overtime.</p>
+
+<h2>Origins</h2>
+
+<p>Most people don’t know this but C# actually owes a lot to F#. Don Syme, the originator of F#, was responsible for creating the concept of Generics in C# and also spent time working on LINQ. These features tend to be more functional in nature. Generics allow us to see code as data and LINQ is a very declarative way to retrieve and modify data from a variety of sources.</p>
+
+<h2>Predictions</h2>
+
+<p>General consensus about functional languages like F# is that they are primarily reserved for the halls of academia (i.e. LISP) but all that is about to change. As demand for multi-core and asynchronous computing increases the future of F# seems bright.</p>
+
+<h2>Why should you care?</h2>
+
+<blockquote><p>“Today we are facing new challenges and trends that open the door to functional languages. There has never been a better time to learn them. We need to write programs that process large sets of data and scale to a large number of processors or computers. We want to write programs that can be easily tested. We want to be able to express our logic in a declarative way which expresses results without explicitly specifying execution details–making the code easier to understand and reason about. All of these trends are embodied in functional programming…</p><footer><strong>Jon Skeet and Tomas Petricek</strong> <cite>Real World Functional Programming</cite></footer></blockquote>
+
+
+<h2>What F# isn’t</h2>
+
+<p>A replacement for C#. While both are very effective langauages in their respective domains and both can overlap in regards to functional and OOP aspects (as well as intermingle via interoperability), C# will most-likely be the first candidate for line-of-business applications due to its adoption levels, performance and pervasiveness in the market. Personally, I believe that F# will be important going forward given the convergence of a few market factors such as data growth, multi-core computing and the desire for elegance in code. Concurrent applications are harder to maintain in a pure object-oriented environment. Race conditions and dealing with thread locking can become very tedious as applications are expected to scale to meet market demand. The functional paradigm does not need to manage state and provides no “side effects”, thus making it much easier to scale applications across multiple cores.</p>
+
+<h2>Who’s using F#?</h2>
+
+<p>-Financial Services
+–Algorithmic Trading
+-Statistical analysis
+-Application Development
+-Web Development</p>
+
+<h2>How Do I Get Started?</h2>
+
+<p>I’ll go through some of the basics of F# in this lesson and provide follow-ups to links and books at the end. Let’s get started with our first example in F#, but before we can do that we need to set up our development environment. In Visual Studio it is possible to create a new F# project by hitting “Ctrl-Shift-N” and creating a F# Console Application.
+But for our purposes we will just use F# interactive which is a stand-alone command line utility. Great for rapid prototyping and learning the language. So navigate to (C:\Program Files (x86)\Microsoft F#\v4.0\fsi.exe). (Aside: You have to right-click the toolbar and select “paste” in order to insert code).</p>
+
+<figure class='code'><figcaption><span>Simple Multiplication Function  </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='fsharp'><span class='line'><span class="k">let</span> <span class="n">multiply</span> <span class="n">x</span> <span class="n">y</span> <span class="o">=</span> <span class="n">x</span> <span class="o">*</span> <span class="n">y</span><span class="o">;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>This function might seem ridiculous at first glance (it did for me), especially if you’re coming from a pure C# background, but let’s translate it to C# and see if it makes anymore sense.</p>
+
+<figure class='code'><figcaption><span>Simple Multiplication Function in C#  </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='csharp'><span class='line'><span class="k">public</span> <span class="kt">int</span> <span class="nf">multiply</span> <span class="p">(</span><span class="kt">int</span> <span class="n">x</span><span class="p">,</span> <span class="kt">int</span> <span class="n">y</span><span class="p">)</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>  <span class="k">return</span> <span class="n">x</span> <span class="p">*</span> <span class="n">y</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'><span class="c1">//or</span>
+</span><span class='line'><span class="n">Func</span><span class="p">&lt;</span><span class="kt">int</span><span class="p">,</span><span class="kt">int</span><span class="p">,</span><span class="kt">int</span><span class="p">&gt;</span> <span class="n">multiply</span> <span class="p">=</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span> <span class="k">return</span> <span class="n">x</span> <span class="p">*</span> <span class="n">y</span><span class="p">;</span> <span class="p">};</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Let</h2>
+
+<p>The &#8220;Let&#8221; keyword might be familiar for those who have worked with LINQ. It might be tempting to think that this keyword is used for assignment. Think of it more as binding to a value rather than assigning a value. Since functions are first class citizens in F# and they can be passed around as parameters and contain return values.</p>
+
+<h2>Val</h2>
+
+<p>The “val multiply: int -> int -> int” can be thought of as: A function named “multiply” that takes an integer as a parameter returns a function that takes an integer as a parameter and outputs an integer. Confusing you say? Yes, absolutely. Why didn’t I just say: “A function that takes in two ints and returns and int.” Because of currying.</p>
+
+<h2>Spicy Curry</h2>
+
+<p>There is something called “currying” in F# that you should be wary of. Currying is the process of partial function application. This allows us to specify only one parameter of a function to receive a function that takes in the other parameter. Here is an example in code:</p>
+
+<figure class='code'><figcaption><span>Curried Multiplication Function in F#  </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='fsharp'><span class='line'><span class="o">&gt;</span> <span class="k">let</span> <span class="n">multiply</span> <span class="n">x</span> <span class="n">y</span> <span class="o">=</span> <span class="n">x</span> <span class="o">*</span> <span class="n">y</span><span class="o">;;</span>
+</span><span class='line'><span class="k">val</span> <span class="n">multiply</span> <span class="o">:</span> <span class="kt">int</span> <span class="o">-&gt;</span> <span class="kt">int</span> <span class="o">-&gt;</span> <span class="kt">int</span>
+</span><span class='line'><span class="o">&gt;</span> <span class="k">let</span> <span class="n">curriedMultiplyX</span> <span class="o">=</span> <span class="n">x</span> <span class="mi">5</span><span class="o">;;</span>
+</span><span class='line'><span class="k">val</span> <span class="n">curriedMultiplyX</span> <span class="o">:</span> <span class="o">(</span><span class="kt">int</span> <span class="o">-&gt;</span> <span class="kt">int</span><span class="o">)</span>
+</span><span class='line'><span class="o">&gt;</span> <span class="n">curriedMultiplyX</span> <span class="mi">7</span><span class="o">;;</span>
+</span><span class='line'><span class="k">val</span> <span class="n">it</span> <span class="o">:</span> <span class="kt">int</span> <span class="o">=</span> <span class="mi">12</span>
+</span><span class='line'><span class="o">&gt;</span> <span class="n">curriedMultiplyX</span> <span class="mi">9</span><span class="o">;;</span>
+</span><span class='line'><span class="k">val</span> <span class="n">it</span> <span class="o">:</span> <span class="kt">int</span> <span class="o">=</span> <span class="mi">14</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Notice how I only specify one parameter for the function named “x”? “x 5″ is saying that I want to return a function that is based on the function named “x” but applies the number 5 as a parameter every time basically.</p>
+
+<h2>Visualization</h2>
+
+<p>F# can also be utilized for visualiztion. Below is a Windows forms example. Copy and paste it into your F# interactive console.</p>
+
+<h2>Windows Forms Example</h2>
+
+<p>In F# Interactive write the following code:</p>
+
+<figure class='code'><figcaption><span>F# Windows Forms Example  </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='fsharp'><span class='line'><span class="k">open</span> <span class="nc">System</span>
+</span><span class='line'><span class="k">open</span> <span class="nn">System</span><span class="p">.</span><span class="nn">Windows</span><span class="p">.</span><span class="nc">Forms</span>
+</span><span class='line'><span class="k">let</span> <span class="n">form</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Form</span><span class="o">(</span><span class="nc">Text</span><span class="o">=</span><span class="s2">&quot;Welcome to F# Win Form Style&quot;</span><span class="o">)</span>
+</span><span class='line'><span class="k">let</span> <span class="n">label</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Label</span><span class="o">(</span><span class="nc">Text</span> <span class="o">=</span> <span class="s2">&quot;This is a label!&quot;</span><span class="o">)</span>
+</span><span class='line'><span class="n">form</span><span class="o">.</span><span class="nn">Controls</span><span class="p">.</span><span class="nc">Add</span><span class="o">(</span><span class="n">label</span><span class="o">)</span>
+</span><span class='line'><span class="n">form</span><span class="o">.</span><span class="nc">Show</span><span class="bp">()</span><span class="o">;;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>As you can see it’s pretty easy to prototype in F# using the interactive console.
+<img src="https://dl.dropbox.com/u/10021156/FViz1.png"></p>
+
+<figure class='code'><figcaption><span>Recursive Factorial Function in F#  </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='fsharp'><span class='line'><span class="k">let</span> <span class="k">rec</span> <span class="n">fac</span> <span class="n">param</span> <span class="o">=</span> <span class="k">if</span> <span class="n">param</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="o">.</span><span class="mi">0</span> <span class="k">then</span> <span class="mi">1</span><span class="o">.</span><span class="mi">0</span> <span class="k">else</span> <span class="n">param</span> <span class="o">*</span> <span class="n">fac</span><span class="o">(</span><span class="n">param</span> <span class="o">-</span> <span class="mi">1</span><span class="o">.</span><span class="mi">0</span><span class="o">);;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>This code calculates the factorial of any number passed in using familiar “if..then” logic. Also, if you are getting strange results, remember that indentation matters in F#, but its really doesn’t inhibit your productivity.</p>
+
+<figure class='code'><figcaption><span>Recursive Factorial Function with Pattern Matching in F#  </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='fsharp'><span class='line'><span class="k">let</span> <span class="k">rec</span> <span class="o">(!)</span> <span class="n">x</span> <span class="o">=</span>
+</span><span class='line'><span class="o">|</span> <span class="mi">0</span> <span class="o">-&gt;</span> <span class="mi">1</span>
+</span><span class='line'><span class="o">|</span> <span class="o">_</span> <span class="o">&gt;</span> <span class="n">n</span> <span class="o">*</span> <span class="n">factorial</span> <span class="o">(</span><span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="o">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>This code should be pretty self-explanatory. The “rec” prefix means that this function is recursive. The (!) means that the name of this function is “!” (this is not operator overloading but a way to bind symbols to function names). The underscore value (“_”) is used as a placeholder variable for every possible value of n. The pipes are kind of like a switch statement on steroids. The value will navigate down the pipes and return the value “1″ if n is “0″ or “n-1″ for everything else and then multiply by the return value recursively.</p>
+
+<p>Asychronous and Concurrent Programming using CPU bound operations.</p>
+
+<p>Now for the fun stuff.
+So let’s take our little factorial example see if we can calculate the factorial of every number from 0 to 51,000 utilizing Parallel Computing. Here’s the code for that. WARNING: If you don’t have a lot of memory then bring it down from 51,000 to something more manageable.</p>
+
+<figure class='code'><figcaption><span>Async and Parallel Factorial Function  </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='fsharp'><span class='line'><span class="c">(* Declare our function *)</span>
+</span><span class='line'><span class="k">let</span> <span class="k">rec</span> <span class="n">fac</span> <span class="n">param</span> <span class="o">=</span> <span class="k">if</span> <span class="n">param</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="o">.</span><span class="mi">0</span> <span class="k">then</span> <span class="mi">1</span><span class="o">.</span><span class="mi">0</span> <span class="k">else</span> <span class="n">param</span> <span class="o">*</span> <span class="n">fac</span><span class="o">(</span><span class="n">param</span> <span class="o">-</span> <span class="mi">1</span><span class="o">.</span><span class="mi">0</span><span class="o">);;</span>
+</span><span class='line'><span class="c">(* Asynchronous Example *)</span>
+</span><span class='line'><span class="k">let</span> <span class="n">result</span> <span class="o">=</span> <span class="nn">Async</span><span class="p">.</span><span class="nc">Parallel</span> <span class="o">[</span><span class="k">for</span> <span class="n">i</span> <span class="k">in</span> <span class="mi">0</span><span class="o">.</span><span class="mi">0</span><span class="o">..</span><span class="mi">51000</span><span class="o">.</span><span class="mi">0</span> <span class="o">-&gt;</span> <span class="n">async</span> <span class="o">{</span> <span class="k">return</span> <span class="n">fac</span><span class="o">(</span><span class="n">i</span><span class="o">)</span> <span class="o">}]</span> <span class="o">|&gt;</span> <span class="nn">Run</span><span class="p">.</span><span class="nc">Synchronously</span><span class="o">;;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>I’ll perform the operation on an 8-Core machine with Diagnostics so we can visualize the processor usage better.</p>
+
+<p><img src="https://dl.dropbox.com/u/10021156/blog/8CoreSynch1-1024x121.png"></p>
+
+<figure class='code'><figcaption><span>Simple Computation Results (Synchronous, non-Parallel) – 41 seconds  </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+</pre></td><td class='code'><pre><code class='fsharp'><span class='line'><span class="k">open</span> <span class="nc">System</span>
+</span><span class='line'><span class="k">open</span> <span class="nn">System</span><span class="p">.</span><span class="nc">Diagnostics</span>
+</span><span class='line'><span class="k">let</span> <span class="k">rec</span> <span class="n">fac</span> <span class="n">x</span> <span class="o">=</span> <span class="k">if</span> <span class="n">x</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="o">.</span><span class="mi">0</span> <span class="k">then</span> <span class="mi">1</span><span class="o">.</span><span class="mi">0</span> <span class="k">else</span> <span class="n">x</span> <span class="o">*</span> <span class="n">fac</span><span class="o">(</span><span class="n">x</span><span class="o">-</span><span class="mi">1</span><span class="o">.</span><span class="mi">0</span><span class="o">)</span>
+</span><span class='line'><span class="k">let</span> <span class="n">watch</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Stopwatch</span><span class="bp">()</span>
+</span><span class='line'><span class="n">watch</span><span class="o">.</span><span class="nc">Start</span><span class="bp">()</span>
+</span><span class='line'><span class="k">let</span> <span class="n">simpleComputation</span> <span class="o">=</span> <span class="o">[</span><span class="k">for</span> <span class="n">i</span> <span class="k">in</span> <span class="mi">0</span><span class="o">.</span><span class="mi">0</span><span class="o">..</span><span class="mi">51000</span><span class="o">.</span><span class="mi">0</span> <span class="o">-&gt;</span> <span class="n">fac</span><span class="o">(</span><span class="n">i</span><span class="o">)]</span>
+</span><span class='line'><span class="n">watch</span><span class="o">.</span><span class="nc">Stop</span><span class="bp">()</span>
+</span><span class='line'><span class="k">let</span> <span class="n">result</span> <span class="o">=</span> <span class="n">watch</span><span class="o">.</span><span class="nn">Elapsed</span><span class="p">.</span><span class="nn">Seconds</span><span class="p">.</span><span class="nc">ToString</span><span class="bp">()</span>
+</span><span class='line'><span class="n">printfn</span> <span class="s2">&quot;%s&quot;</span> <span class="n">result</span><span class="o">;;</span>
+</span><span class='line'>
+</span><span class='line'><span class="c">(* RESULTS *)</span>
+</span><span class='line'><span class="k">val</span> <span class="n">fac</span> <span class="o">:</span> <span class="kt">float</span> <span class="o">-&gt;</span> <span class="kt">float</span>
+</span><span class='line'><span class="k">val</span> <span class="n">watch</span> <span class="o">:</span> <span class="nn">System</span><span class="p">.</span><span class="nn">Diagnostics</span><span class="p">.</span><span class="nc">Stopwatch</span>
+</span><span class='line'><span class="k">val</span> <span class="n">simpleComputation</span> <span class="o">:</span> <span class="kt">float</span> <span class="kt">list</span> <span class="o">=</span>
+</span><span class='line'>  <span class="o">[</span><span class="mi">1</span><span class="o">.</span><span class="mi">0</span><span class="o">;</span> <span class="mi">1</span><span class="o">.</span><span class="mi">0</span><span class="o">;</span> <span class="mi">2</span><span class="o">.</span><span class="mi">0</span><span class="o">;</span> <span class="mi">6</span><span class="o">.</span><span class="mi">0</span><span class="o">;</span> <span class="mi">24</span><span class="o">.</span><span class="mi">0</span><span class="o">;</span> <span class="mi">120</span><span class="o">.</span><span class="mi">0</span><span class="o">;</span> <span class="mi">720</span><span class="o">.</span><span class="mi">0</span><span class="o">;</span> <span class="mi">5040</span><span class="o">.</span><span class="mi">0</span><span class="o">;</span> <span class="mi">40320</span><span class="o">.</span><span class="mi">0</span><span class="o">;</span> <span class="mi">362880</span><span class="o">.</span><span class="mi">0</span><span class="o">;</span>
+</span><span class='line'>   <span class="mi">3628800</span><span class="o">.</span><span class="mi">0</span><span class="o">;</span> <span class="mi">39916800</span><span class="o">.</span><span class="mi">0</span><span class="o">;</span> <span class="mi">479001600</span><span class="o">.</span><span class="mi">0</span><span class="o">;</span> <span class="mi">6227020800</span><span class="o">.</span><span class="mi">0</span><span class="o">;</span> <span class="mi">8</span><span class="o">.</span><span class="mi">71782912</span><span class="n">e</span><span class="o">+</span><span class="mi">10</span><span class="o">;</span>
+</span><span class='line'>   <span class="mi">1</span><span class="o">.</span><span class="mi">307674368</span><span class="n">e</span><span class="o">+</span><span class="mi">12</span><span class="o">;</span> <span class="mi">2</span><span class="o">.</span><span class="mi">092278989</span><span class="n">e</span><span class="o">+</span><span class="mi">13</span><span class="o">;</span> <span class="mi">3</span><span class="o">.</span><span class="mi">556874281</span><span class="n">e</span><span class="o">+</span><span class="mi">14</span><span class="o">;</span> <span class="mi">6</span><span class="o">.</span><span class="mi">402373706</span><span class="n">e</span><span class="o">+</span><span class="mi">15</span><span class="o">;...]</span>
+</span><span class='line'><span class="k">val</span> <span class="n">result</span> <span class="o">:</span> <span class="kt">string</span> <span class="o">=</span> <span class="s2">&quot;41&quot;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><img src="https://dl.dropbox.com/u/10021156/blog/8CoreAsynParallel-1024x124.png"></p>
+
+<figure class='code'><figcaption><span>Complex Computation Results (Asychronous, Parallel) – 13 seconds  </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+</pre></td><td class='code'><pre><code class='fsharp'><span class='line'><span class="k">open</span> <span class="nc">System</span>
+</span><span class='line'><span class="k">open</span> <span class="nn">System</span><span class="p">.</span><span class="nc">Diagnostics</span>
+</span><span class='line'><span class="k">let</span> <span class="k">rec</span> <span class="n">fac</span> <span class="n">x</span> <span class="o">=</span> <span class="k">if</span> <span class="n">x</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="o">.</span><span class="mi">0</span> <span class="k">then</span> <span class="mi">1</span><span class="o">.</span><span class="mi">0</span> <span class="k">else</span> <span class="n">x</span> <span class="o">*</span> <span class="n">fac</span><span class="o">(</span><span class="n">x</span><span class="o">-</span><span class="mi">1</span><span class="o">.</span><span class="mi">0</span><span class="o">)</span>
+</span><span class='line'><span class="k">let</span> <span class="n">watch</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Stopwatch</span><span class="bp">()</span>
+</span><span class='line'><span class="n">watch</span><span class="o">.</span><span class="nc">Start</span><span class="bp">()</span>
+</span><span class='line'><span class="k">let</span> <span class="n">complexComputation</span> <span class="o">=</span> <span class="nn">Async</span><span class="p">.</span><span class="nc">Parallel</span> <span class="o">[</span><span class="k">for</span> <span class="n">i</span> <span class="k">in</span> <span class="mi">0</span><span class="o">.</span><span class="mi">0</span><span class="o">..</span><span class="mi">51000</span><span class="o">.</span><span class="mi">0</span> <span class="o">-&gt;</span> <span class="n">async</span> <span class="o">{</span> <span class="k">return</span> <span class="n">fac</span><span class="o">(</span><span class="n">i</span><span class="o">)</span> <span class="o">}]</span> <span class="o">|&gt;</span> <span class="nn">Async</span><span class="p">.</span><span class="nc">RunSynchronously</span><span class="o">;;</span>
+</span><span class='line'><span class="n">watch</span><span class="o">.</span><span class="nc">Stop</span><span class="bp">()</span>
+</span><span class='line'><span class="k">let</span> <span class="n">result</span> <span class="o">=</span> <span class="n">watch</span><span class="o">.</span><span class="nn">Elapsed</span><span class="p">.</span><span class="nn">Seconds</span><span class="p">.</span><span class="nc">ToString</span><span class="bp">()</span>
+</span><span class='line'><span class="n">printfn</span> <span class="s2">&quot;%s&quot;</span> <span class="n">result</span><span class="o">;;</span>
+</span><span class='line'>
+</span><span class='line'><span class="c">(* RESULTS *)</span>
+</span><span class='line'><span class="k">val</span> <span class="n">fac</span> <span class="o">:</span> <span class="kt">float</span> <span class="o">-&gt;</span> <span class="kt">float</span>
+</span><span class='line'><span class="k">val</span> <span class="n">watch</span> <span class="o">:</span> <span class="nc">Stopwatch</span>
+</span><span class='line'><span class="k">val</span> <span class="n">complexComputation</span> <span class="o">:</span> <span class="kt">float</span> <span class="bp">[]</span> <span class="o">=</span>
+</span><span class='line'>  <span class="o">[|</span><span class="mi">1</span><span class="o">.</span><span class="mi">0</span><span class="o">;</span> <span class="mi">1</span><span class="o">.</span><span class="mi">0</span><span class="o">;</span> <span class="mi">2</span><span class="o">.</span><span class="mi">0</span><span class="o">;</span> <span class="mi">6</span><span class="o">.</span><span class="mi">0</span><span class="o">;</span> <span class="mi">24</span><span class="o">.</span><span class="mi">0</span><span class="o">;</span> <span class="mi">120</span><span class="o">.</span><span class="mi">0</span><span class="o">;</span> <span class="mi">720</span><span class="o">.</span><span class="mi">0</span><span class="o">;</span> <span class="mi">5040</span><span class="o">.</span><span class="mi">0</span><span class="o">;</span> <span class="mi">40320</span><span class="o">.</span><span class="mi">0</span><span class="o">;</span> <span class="mi">362880</span><span class="o">.</span><span class="mi">0</span><span class="o">;</span>
+</span><span class='line'>    <span class="mi">3628800</span><span class="o">.</span><span class="mi">0</span><span class="o">;</span> <span class="mi">39916800</span><span class="o">.</span><span class="mi">0</span><span class="o">;</span> <span class="mi">479001600</span><span class="o">.</span><span class="mi">0</span><span class="o">;</span> <span class="mi">6227020800</span><span class="o">.</span><span class="mi">0</span><span class="o">;</span> <span class="mi">8</span><span class="o">.</span><span class="mi">71782912</span><span class="n">e</span><span class="o">+</span><span class="mi">10</span><span class="o">;</span>
+</span><span class='line'>    <span class="mi">1</span><span class="o">.</span><span class="mi">307674368</span><span class="n">e</span><span class="o">+</span><span class="mi">12</span><span class="o">;</span> <span class="mi">2</span><span class="o">.</span><span class="mi">092278989</span><span class="n">e</span><span class="o">+</span><span class="mi">13</span><span class="o">;</span> <span class="mi">3</span><span class="o">.</span><span class="mi">556874281</span><span class="n">e</span><span class="o">+</span><span class="mi">14</span><span class="o">;</span> <span class="mi">6</span><span class="o">.</span><span class="mi">402373706</span><span class="n">e</span><span class="o">+</span><span class="mi">15</span><span class="o">;</span>
+</span><span class='line'>    <span class="o">...|]</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Results: Non-parallel version is 3.15 times slower. Parallel version 315% faster!</p>
+
+<h2>Conclusion</h2>
+
+<p>There are a lot of things to be excited about in F#. Learning F# will definitely make you a better C# programmer by providing you with more of a functional mindset. I think in the future it would be a fair bet to say that more .NET programmers will begin to inter-operate between these two languages.</p>
+
+<h2>Resource Round-Up</h2>
+
+<p><em>Interesting F# project to watch: WebSharper
+</em>Check out my F# stock ticker app on my github account. This is a small project that will read information from yahoo’s financial stock history for any given stock, summarize the data using List functions such as “map” and “reduce” and will then output the results to a C# console application. This code was derived from Luca Bolognese’s original talk at PDC on F#. Luca is actually using F# in an algorithmic trading setting now at Credit Suisse.
+*Best Getting Started Video Tutorial on F#</p>
+</div>
+  
+  
+
+
+    </article>
+  
   <div class="pagination">
     
     <a href="/blog/archives">Blog Archives</a>
@@ -130,6 +420,10 @@
     
       <li class="post">
         <a href="/blog/2012/08/17/first-post-on-new-blog/">First post on new blog</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2011/08/11/getting-started-with-f-number/">Getting started with F#</a>
       </li>
     
   </ul>
