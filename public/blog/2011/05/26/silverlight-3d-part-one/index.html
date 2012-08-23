@@ -1,0 +1,684 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Silverlight 3D: Part One - david m. johnson</title>
+  <meta name="author" content="david m. johnson">
+
+  
+  <meta name="description" content="The Silverlight 5 Beta It’s no secret that Microsoft has released the beta version of Silverlight 5 with many new and surprising features. But what &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://davidmjohnson.me/blog/2011/05/26/silverlight-3d-part-one/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="david m. johnson" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-34145525-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">david m. johnson</a></h1>
+  
+    <h2>[code] -> [tangents] -> [stuff] -> dmj</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:davidmjohnson.me" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="http://careers.stackoverflow.com/davidmjohnson">Resume</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Silverlight 3D: Part One</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-05-26T16:17:00-05:00" pubdate data-updated="true">May 26<span>th</span>, 2011</time>
+        
+         | <a href="#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p><img src="https://dl.dropbox.com/u/10021156/blog/Ball.png"></p>
+
+<h2>The Silverlight 5 Beta</h2>
+
+<p>It’s no secret that Microsoft has released the beta version of Silverlight 5 with many new and surprising features. But what might be unfamiliar territory for some is the inclusion of a low-level 3D API based on the XNA stack. That’s right, the core of the XNA Game Studio is now built into Silverlight (with some caveats of course). “But isn’t XNA just for games?” Mostly, yes. But that hasn’t stopped Microsoft from allowing developers to get creative. Check out John Papa’s demo at MIX11 of a 3D House Builder Simulator. 3D Product Visualization is now a reality and is a viable solution for any developer wanting to spice up content delivery. If you aren’t convinced take a look at the SLARToolkit (Silverlight Augemented Reality) for more cool effects, or the 3D rendition of Scott Guthrie way back at the firestarter event. If that still hasn’t caught your attention then stop reading this post. But for the rest of you, we’ll go over what it takes to build and display 3D graphics in SL5.</p>
+
+<h2>Three ways to build 3D graphics in Silverlight 5:</h2>
+
+<p>Create your models by hand (by plotting each individual vertex) this can be is very tedious.
+Create your model algorithmically (Check out the Solar Winds Project)
+Import your model from a third-party modeling tool</p>
+
+<p>If you have already developed XNA applications/games you will find that XNA for Silverlight is very similar, albeit there are some differences. Silverlight 5 provides a new User Control named “Drawing Surface” which includes the “Draw” event. This renders all 3D content on a separate thread known as the “composition” thread. This also updates all projection, view and world matrices which are responsible for positioning things like the camera and the model in 3D space. So let’s get started creating our own polygon in 3D space. Note: This is part one of a two-part series. In this series we will focus on the theory and abstract concepts behind the creation of 3D graphics in Silverlight 5 to produce a simple triangle. Part two will be much cooler.</p>
+
+<h2>Essential Resources</h2>
+
+<p>In order to complete this tutorial you will need to have the following on your machine:
+DirectX SDK
+Visual Studio 2010
+Silverlight 5 Beta
+Microsoft.Xna.Framework.Math.dll</p>
+
+<h2>Five Steps</h2>
+
+<p>At a high level there are 5 basic steps to follow in order to render 3D graphics in Silverlight 5 (Straight from the .CHM).
+1. Setup the initial project
+2. Create a structure to hold vertex data (includes VertexDeclaration), instantiate the struct, and pass it into your Vertex Buffer.
+3. Create World view, Camera view, and Projection space matrices.
+4. Create PixelShader and VertexShader objects.
+5. Raise the Draw Event.</p>
+
+<p>This may all sound complicated initially, but as you continue to read it will begin to make sense. Also, this is meant to be a crash-course guide to XNA and SL5. If you want real depth I recommend you check out this book. So let’s get started.</p>
+
+<h2>Getting Started with the 3D API – Your first triangle.</h2>
+
+<p>Create a new Silverlight Project named “FirstTriangle” make sure you check that it is a Silverlight 5 application. Make sure to add a web project as well.</p>
+
+<h3>Step 1: Turn it on</h3>
+
+<p>By default GPU Acceleration is not enabled, so go ahead and include this extra param tag into your Triangle web application. You will be unable to render graphics without it.</p>
+
+<figure class='code'><figcaption><span>Turn it on </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='xml'><span class='line'><span class="nt">&lt;param</span> <span class="na">name=</span><span class="s">&quot;EnableGPUAcceleration&quot;</span> <span class="na">value=</span><span class="s">&quot;true&quot;</span> <span class="nt">/&gt;</span>
+</span><span class='line'>    <span class="c">&lt;!--  Set other parameters here  --&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Liquid error: ClassNotFound: no lexer for alias &#8216;xaml&#8217; found</p>
+
+<p>The two events we will be focusing on in this application primarily are the “Draw” event and the “Loaded” event. Also, declare these variables in your MainPage.xaml.cs class. We’ll dive into what they mean in a little later.</p>
+
+<figure class='code'><figcaption><span># Shaders and Buffers </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='c'><span class='line'><span class="n">VertexShader</span> <span class="n">vs</span><span class="p">;</span>
+</span><span class='line'><span class="n">PixelShader</span> <span class="n">ps</span><span class="p">;</span>
+</span><span class='line'><span class="n">VertexBuffer</span> <span class="n">vb</span><span class="p">;</span>
+</span><span class='line'><span class="n">Matrix</span> <span class="n">viewproj</span><span class="p">;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Step 2: Create Structure to hold Vertex Data</h3>
+
+<p>Before we can go any further it’s important to note exactly what we’re doing when we program against the GPU. Check out the image below to see the pipeline of just how the vertices we describe get displayed up on the screen.</p>
+
+<p><img src="https://dl.dropbox.com/u/10021156/blog/XNA-explanation-227x300.png"></p>
+
+<blockquote><p>“Points in three-dimensional space are represented as a 3-component vector called a vertex. A vertex contains an x, y, and z component. Vertices are connected together to form primitives, such as triangles, which are defined with three vertices. Multiple triangles can be combined together into lists or stripes which from a mesh. Meshes of triangles are combined together to create complex shapes. For example, a square can be drawn using two triangles. ”</p></blockquote>
+
+
+<h3>Vertex Information</h3>
+
+<p>Vertex information is typically stored in a structure which may include data such as position, color, and texture coordinates. So in your MainPage.xaml.cs add this struct below our MainPage class. This struct defines the type of content our vertices will hold (in this case only Position and Color data). Our struct will expose a static, read-only, Vertex Declaration that will be passed into the VertexBuffer. A VertexDeclaration defines the layout of the vertex data.</p>
+
+<figure class='code'><figcaption><span># VertexDeclaration </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class='c'><span class='line'><span class="n">public</span> <span class="k">struct</span> <span class="n">VertexPositionColor</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="n">public</span> <span class="n">Vector3</span> <span class="n">Position</span><span class="p">;</span>
+</span><span class='line'>        <span class="n">public</span> <span class="n">Color</span> <span class="n">Color</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">public</span> <span class="nf">VertexPositionColor</span><span class="p">(</span><span class="n">Vector3</span> <span class="n">Position</span><span class="p">,</span> <span class="n">Color</span> <span class="n">Color</span><span class="p">)</span>
+</span><span class='line'>        <span class="p">{</span>
+</span><span class='line'>            <span class="n">this</span><span class="p">.</span><span class="n">Position</span> <span class="o">=</span> <span class="n">Position</span><span class="p">;</span>
+</span><span class='line'>            <span class="n">this</span><span class="p">.</span><span class="n">Color</span> <span class="o">=</span> <span class="n">Color</span><span class="p">;</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">public</span> <span class="k">static</span> <span class="n">readonly</span> <span class="n">VertexDeclaration</span> <span class="n">VertexDeclaration</span> <span class="o">=</span> <span class="n">new</span> <span class="n">VertexDeclaration</span><span class="p">(</span><span class="n">new</span> <span class="n">VertexElement</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">VertexElementFormat</span><span class="p">.</span><span class="n">Vector3</span><span class="p">,</span> <span class="n">VertexElementUsage</span><span class="p">.</span><span class="n">Position</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span><span class="n">new</span> <span class="n">VertexElement</span><span class="p">((</span><span class="k">sizeof</span><span class="p">(</span><span class="kt">float</span><span class="p">)</span> <span class="o">*</span> <span class="mi">3</span><span class="p">),</span> <span class="n">VertexElementFormat</span><span class="p">.</span><span class="n">Color</span><span class="p">,</span> <span class="n">VertexElementUsage</span><span class="p">.</span><span class="n">Color</span><span class="p">,</span> <span class="mi">0</span><span class="p">));</span> <span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The VertexDeclaration takes in four parameters. The first corresponds to the offset. Your first VertexElement should not contain an offset since it is the first element. The next VertexElement should be offset by 12 bytes, or by the size of VertexElement (which was a Vector3 in our case). Note: Vector3 contains 3 floats. One float is 4 bytes, Therefore, 4 bytes * 3 floats = 12 bytes… that’s where the 12 is coming from. (Note: Vector3 is in the Microsoft.XNA.Framework.Math.dll, hopefully this will be included in Silverlight 5 too). So, each vertex will contain information about position as well as color. (You can also map textures to 3D objects as well using another VertexElementFormat of type “Texture” – We will dive into this in Part 2).</p>
+
+<p>You can think of this struct as your data model, describing how your vertex data will be interpreted by the GPU. You can also think of the instantiation of this struct as your view model. So we will instantiate this struct inside of our surface_loaded event handler to begin the initialization process.</p>
+
+<h3>Vertex Buffer</h3>
+
+<figure class='code'><figcaption><span># Vertex Buffer </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+</pre></td><td class='code'><pre><code class='c'><span class='line'><span class="n">private</span> <span class="kt">void</span> <span class="nf">surface_Loaded</span><span class="p">(</span><span class="n">object</span> <span class="n">sender</span><span class="p">,</span> <span class="n">RoutedEventArgs</span> <span class="n">e</span><span class="p">)</span>
+</span><span class='line'>        <span class="p">{</span>
+</span><span class='line'><span class="c1">//get device</span>
+</span><span class='line'><span class="n">GraphicsDevice</span> <span class="n">device</span> <span class="o">=</span> <span class="n">GraphicsDeviceManager</span><span class="p">.</span><span class="n">Current</span><span class="p">.</span><span class="n">GraphicsDevice</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'> <span class="c1">//Declare struct</span>
+</span><span class='line'> <span class="n">VertexPositionColor</span><span class="p">[]</span> <span class="n">vertices</span> <span class="o">=</span> <span class="n">new</span> <span class="n">VertexPositionColor</span><span class="p">[</span><span class="mi">3</span><span class="p">];</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">//Plot your verts</span>
+</span><span class='line'><span class="n">vertices</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">new</span> <span class="n">VertexPositionColor</span><span class="p">(</span><span class="n">new</span> <span class="n">Vector3</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="cm">/*top*/</span><span class="p">,</span> <span class="n">new</span> <span class="n">Color</span><span class="p">(</span><span class="mi">255</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="cm">/*red*/</span><span class="p">);</span>
+</span><span class='line'><span class="n">vertices</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">new</span> <span class="n">VertexPositionColor</span><span class="p">(</span><span class="n">new</span> <span class="n">Vector3</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="cm">/*left*/</span><span class="p">,</span> <span class="n">new</span> <span class="n">Color</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="cm">/*green*/</span><span class="p">);</span>
+</span><span class='line'><span class="n">vertices</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">new</span> <span class="n">VertexPositionColor</span><span class="p">(</span><span class="n">new</span> <span class="n">Vector3</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="cm">/*right*/</span><span class="p">,</span> <span class="n">new</span> <span class="n">Color</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="cm">/*blue*/</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">//Assign it to buffer</span>
+</span><span class='line'><span class="n">vb</span> <span class="o">=</span> <span class="n">new</span> <span class="n">VertexBuffer</span><span class="p">(</span><span class="n">device</span><span class="p">,</span> <span class="n">VertexPositionColor</span><span class="p">.</span><span class="n">VertexDeclaration</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">BufferUsage</span><span class="p">.</span><span class="n">WriteOnly</span><span class="p">);</span>
+</span><span class='line'><span class="n">vb</span><span class="p">.</span><span class="n">SetData</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">vertices</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">vertices</span><span class="p">.</span><span class="n">Length</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">//Set Camera</span>
+</span><span class='line'><span class="n">view</span> <span class="o">=</span> <span class="n">Matrix</span><span class="p">.</span><span class="n">CreateLookAt</span><span class="p">(</span><span class="n">new</span> <span class="n">Vector3</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span> <span class="n">Vector3</span><span class="p">.</span><span class="n">Zero</span><span class="p">,</span> <span class="n">Vector3</span><span class="p">.</span><span class="n">Up</span><span class="p">);</span> <span class="c1">//defines the position of the camera in 3D space</span>
+</span><span class='line'><span class="n">projection</span> <span class="o">=</span> <span class="n">Matrix</span><span class="p">.</span><span class="n">CreatePerspectiveFieldOfView</span><span class="p">(</span><span class="n">MathHelper</span><span class="p">.</span><span class="n">PiOver4</span><span class="p">,</span> <span class="mf">1.667f</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">100</span><span class="p">);</span> <span class="c1">//viewing angle, aspect ratio, near and far axis</span>
+</span><span class='line'><span class="n">viewproj</span> <span class="o">=</span> <span class="n">view</span> <span class="o">*</span> <span class="n">projection</span><span class="p">;</span> <span class="c1">//This represents our world space which will be passed into our vertex shader.</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">//Set up Shaders</span>
+</span><span class='line'><span class="n">ps</span> <span class="o">=</span> <span class="n">PixelShader</span><span class="p">.</span><span class="n">FromStream</span><span class="p">(</span><span class="n">device</span><span class="p">,</span> <span class="n">Application</span><span class="p">.</span><span class="n">GetResourceStream</span><span class="p">(</span><span class="n">new</span> <span class="n">Uri</span><span class="p">(</span><span class="err">@</span><span class="s">&quot;FirstTriangle;component/Triangle.ps&quot;</span><span class="p">,</span> <span class="n">UriKind</span><span class="p">.</span><span class="n">Relative</span><span class="p">)).</span><span class="n">Stream</span><span class="p">);</span>
+</span><span class='line'><span class="n">vs</span> <span class="o">=</span> <span class="n">VertexShader</span><span class="p">.</span><span class="n">FromStream</span><span class="p">(</span><span class="n">device</span><span class="p">,</span> <span class="n">Application</span><span class="p">.</span><span class="n">GetResourceStream</span><span class="p">(</span><span class="n">new</span> <span class="n">Uri</span><span class="p">(</span><span class="err">@</span><span class="s">&quot;FirstTriangle;component/Triangle.vs&quot;</span><span class="p">,</span> <span class="n">UriKind</span><span class="p">.</span><span class="n">Relative</span><span class="p">)).</span><span class="n">Stream</span><span class="p">);</span>
+</span><span class='line'>        <span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Graphics Device</h3>
+
+<p>The GraphicsDevice is a working representation of your GPU, so grab it. Next, you will create a vertex array containing three vertices to represent your triangle. The code should be self-explanatory. The next two lines of code create a new VertexBuffer and assign the structure of our triangle to it. A VertexBuffer is a data buffer that contains a VertexDeclaration which describes the buffer layout to the graphics device. The vertex buffer also contains all the vertex data.</p>
+
+<blockquote><p>In a 3D scene there are typically multiple views that must be maintained. Three common views are the world space, view space, and projection space. These are defined as 4×4 matrices. The world space is the main point of reference. It is the space that objects are placed in. The view space is composed of three components. The position of the camera in world space, the coordinates in world space that the camera is looking at, and the direction that is up. For example, if the first component was 0,0,5, then this indicates that camera is at position (0,0,5). If the second component was 0,0,0, (Vector3.Zero) then this indicates that the camera is pointing towards the origin of world space. Finally, if the final component is 0,1,0, (Vector.Up) then this indicates that the up direction of the camera is along the positive y-axis. The final space is the projection matrix. This is the actual region, within the view space, that the camera sees. The space is defined as a frustum. A frustum is like a pyramid that has the pointed portion cut off leaving a flat plane. Everything in front of the front plane of the frustum is clipped and everything behind the back plane of the frustum is clipped. So, only the objects within the region between the front and back planes are rendered.”</p></blockquote>
+
+
+<p>The first parameter, MathHelper.PiOver4, corresponds to .785 radians which is roughly 45 degree field of view, The next parameter is 1.667f which corresponds to a 4:3 aspect ratio. 1 represents the near distance plane and 10 the far distance plane. Only vertices between these two numbers will be viewable.</p>
+
+<p><img src="https://dl.dropbox.com/u/10021156/blog/viewingFrustrum.png" title="An illustrated look at the viewing frustrum" ></p>
+
+<h3>Step 4: Working with shaders</h3>
+
+<p>After we multiply our view and projection matrices we yield world space. This space will then be passed into what is known as a vertex shader. A vertex shader is a graphics processing function used to add special effects to objects in a 3D environment. Vertex shaders are run once for each vertex given to the graphics processor. The purpose is to transform each vertex’s 3D position in virtual space to the 2D coordinate at which it appears on the screen (as well as a depth value for the Z-buffer). Vertex shaders can manipulate properties such as position, color, and texture coordinate, but cannot create new vertices. The output of the vertex shader goes to the next stage in the pipeline, which is either a geometry shader if present or the rasterizer otherwise. Similarly, A pixel shader is a computation kernel function that computes color and other attributes of each pixel. Pixel shaders range from always outputting the same color, to applying a lighting value, to doing bump mapping, shadows, specular highlights, translucency and other phenomena. For our purposes we will define a basic vertex and pixel shader using HLSL (High Level Shader Language) that will not perform any additional manipulations but simply pass our data through for rendering. Here is the code below:</p>
+
+<p>Liquid error: ClassNotFound: no lexer for alias &#8216;hlsl&#8217; found</p>
+
+<p>Liquid error: ClassNotFound: no lexer for alias &#8216;hlsl&#8217; found</p>
+
+<h3>Compile</h3>
+
+<p>These shaders will then need to be compiled using fxc.exe (part of the DirectX SDK) and imported into your silverlight application. Make sure you set them with a build action of “resource.”
+Next, find your fxc.exe application. Mine is located here: C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Utilities\bin\x64.
+so open up a command prompt and type</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>cd C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Utilities\bin\x64</span></code></pre></td></tr></table></div></figure>
+
+
+<p>This will navigate you to the fxc.exe directory.
+Now in order to compile your vertex shader you should execute this command</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>Fxc.exe /T ps_2_0 /O3 /Zpr /Fo 
+</span><span class='line'>C:\users\djohnson\desktop\Triangle.ps 
+</span><span class='line'>C:\users\djohnson\desktop\Triangle.ps.hlsl</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Note</h3>
+
+<p>Note: Since my HLSL files are located on my desktop I am referencing them there as well as projecting a Triangle.ps file for output. (This is the pixel shader extension and the file that should be created if you executed the command properly. Do the same with the vertex shader).
+Command to compile a Vertex Shader using FXC.exe</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Utilities\bin\x64\Fxc.exe /T vs_2_0 /O3 /Zpr /Fo 
+</span><span class='line'>C:\users\djohnson\desktop\Triangle.vs 
+</span><span class='line'>C:\users\djohnson\desktop\Triangle.vs.hlsl</span></code></pre></td></tr></table></div></figure>
+
+
+<p>(Note: the vs_2_0 in this command is differen than the ps_2_0 in the previous)
+After they are built import both the .ps and .vs files into your silverlight project and make sure their build action is set to resource. But if you are really lazy and don’t want to compile your own shaders you can just grab my pre-compiled shaders and import them here.</p>
+
+<h3>Step 5</h3>
+
+<figure class='code'><figcaption><span>The Draw Event - Bringing it all together </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class='csharp'><span class='line'><span class="k">private</span> <span class="k">void</span> <span class="nf">surface_Draw</span><span class="p">(</span><span class="kt">object</span> <span class="n">sender</span><span class="p">,</span> <span class="n">DrawEventArgs</span> <span class="n">e</span><span class="p">)</span>
+</span><span class='line'>     <span class="p">{</span>
+</span><span class='line'>         <span class="n">GraphicsDevice</span> <span class="n">device</span> <span class="p">=</span> <span class="n">e</span><span class="p">.</span><span class="n">GraphicsDevice</span><span class="p">;</span>
+</span><span class='line'>         <span class="c1">// Clear the GraphicsDevice</span>
+</span><span class='line'>         <span class="n">device</span><span class="p">.</span><span class="n">Clear</span><span class="p">(</span><span class="n">ClearOptions</span><span class="p">.</span><span class="n">Target</span> <span class="p">|</span> <span class="n">ClearOptions</span><span class="p">.</span><span class="n">DepthBuffer</span><span class="p">,</span> <span class="n">Color</span><span class="p">.</span><span class="n">Transparent</span><span class="p">,</span> <span class="m">10.0f</span><span class="p">,</span> <span class="m">0</span><span class="p">);</span>
+</span><span class='line'>         <span class="c1">//Set up device device</span>
+</span><span class='line'>         <span class="n">device</span><span class="p">.</span><span class="n">SetVertexBuffer</span><span class="p">(</span><span class="n">vb</span><span class="p">);</span>
+</span><span class='line'>         <span class="n">device</span><span class="p">.</span><span class="n">SetVertexShader</span><span class="p">(</span><span class="n">vs</span><span class="p">);</span>
+</span><span class='line'>         <span class="n">device</span><span class="p">.</span><span class="n">SetPixelShader</span><span class="p">(</span><span class="n">ps</span><span class="p">);</span>
+</span><span class='line'>         <span class="n">device</span><span class="p">.</span><span class="n">SetVertexShaderConstantFloat4</span><span class="p">(</span><span class="m">0</span><span class="p">,</span> <span class="k">ref</span> <span class="n">viewproj</span><span class="p">);</span>
+</span><span class='line'>         <span class="n">device</span><span class="p">.</span><span class="n">DrawPrimitives</span><span class="p">(</span><span class="n">PrimitiveType</span><span class="p">.</span><span class="n">TriangleStrip</span><span class="p">,</span> <span class="m">0</span><span class="p">,</span> <span class="n">vb</span><span class="p">.</span><span class="n">VertexCount</span> <span class="p">/</span> <span class="m">3</span><span class="p">);</span>
+</span><span class='line'>         <span class="n">e</span><span class="p">.</span><span class="n">InvalidateSurface</span><span class="p">();</span>
+</span><span class='line'>     <span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The Draw event handler is where all action happens. In this handler we are once again grabbing the current graphics device, but this time we are invoking the clear method before we call our Draw Primitives. (Note: The Draw method runs in a loop similar to an XNA game loop rendering out each frame individually). Next, we pass in our VertexBuffer (which contains the vertex data) into our device. We then set both the vertex shader and pixel shader (which describe how our content is displayed pre-rasterization and post-rasterization). Finally, we pass in our view projection matrix into our vertex shader and call the DrawPrimitives method. In the Draw primitives method we are using “Triangle Strip.” This will create a polygon from the last vertice that was added in 3D space. This is accomplished by analyzing the two previous vertex positions and attempting to create a triangular polygon utilizing those positions. Invalidating the surface will invoke the draw method to be called again and will re-render out the content with our without any geometry transformations. (Geometry transformations can be accomplished through manipulation of the view and projection matrices, please see the third tutorial for more information on that).</p>
+
+<p>If all goes according to plan you should have your first Triangle mesh drawn into 3D space.</p>
+
+<p><img src="https://dl.dropbox.com/u/10021156/blog/TriangleResult-300x261.png" title="All that hard work for a simple triangle" ></p>
+
+<p>If you have any issues here is the source code.</p>
+
+<p>Let me know if you have any questions comments concerning any of the info above. Cya in Part 2.</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">david m. johnson</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-05-26T16:17:00-05:00" pubdate data-updated="true">May 26<span>th</span>, 2011</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/-net/'>.NET</a>, <a class='category' href='/blog/categories/3d/'>3D</a>, <a class='category' href='/blog/categories/xna/'>XNA</a>, <a class='category' href='/blog/categories/silverlight/'>silverlight</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://davidmjohnson.me/blog/2011/05/26/silverlight-3d-part-one/" data-via="djohnsonm" data-counturl="http://davidmjohnson.me/blog/2011/05/26/silverlight-3d-part-one/" >Tweet</a>
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+    <div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
+  
+</div>
+
+    
+    <p class="meta">
+      
+      
+        <a class="basic-alignment right" href="/blog/2011/08/11/getting-started-with-f-number/" title="Next Post: Getting started with F#">Getting started with F# &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    
+<section>
+  <h1>About Me</h1>
+  <p>David M. Johnson is a life-long learner, developer, traveler, almost paleo, amateur theologian and chicagoan.</p>
+    </section>
+<section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2012/08/17/first-post-on-new-blog/">First post on new blog</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/05/12/roll-your-own-twitter-feed-with-backbone-dot-js/">Roll your own Twitter Feed with Backbone.js</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2011/08/31/testing-html5-web-apps-with-watir/">Testing HTML5 Web Apps with WATIR</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2011/08/11/getting-started-with-f-number/">Getting started with F#</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2011/05/26/silverlight-3d-part-one/">Silverlight 3D: Part One</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/djohnsonm">@djohnsonm</a> on GitHub
+  
+  <script type="text/javascript">
+    $.domReady(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'djohnsonm',
+            count: 4,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+<section>
+  <h1>Latest Tweets</h1>
+  <ul id="tweets">
+    <li class="loading">Status updating...</li>
+  </ul>
+  <script type="text/javascript">
+    $.domReady(function(){
+      getTwitterFeed("djohnsonm", 4, false);
+    });
+  </script>
+  <script src="/javascripts/twitter.js" type="text/javascript"> </script>
+  
+    <a href="http://twitter.com/djohnsonm" class="twitter-follow-button" data-show-count="false">Follow @djohnsonm</a>
+  
+</section>
+
+
+
+<section class="googleplus">
+  <h1>
+    <a href="https://plus.google.com/115046248563331704822?rel=author">
+      <img src="http://www.google.com/images/icons/ui/gprofile_button-32.png" width="32" height="32">
+	Google+    
+</a>
+</h1>
+</section>
+
+
+
+<section>
+<h1>Stack Overflow</h1>
+<a href="http://stackoverflow.com/users/453261/dave"><img src="http://stackoverflow.com/users/flair/453261.png" width="208" height="58" alt="profile for dave at Stack Overflow, Q&amp;A for professional and enthusiast programmers" title="profile for dave at Stack Overflow, Q&amp;A for professional and enthusiast programmers"></a>
+</section>
+
+
+<section>
+  <h1>Coderwall</h1>
+  <ul id="cw_badges">
+    <li class="loading">Status updating...</li>
+  </ul>
+
+  <script type="text/javascript">
+    var coderwall = (function(){
+      function render(options, badges){
+        var fragment = '',
+            t = $(options.target)[0],
+            height = 65,
+            width = 65,
+            index;
+
+        for (index in badges) {
+          fragment += '<a class="cw_badge"title="' + badges[index].description + '" href="http://coderwall.com/' + options.user + '">';
+          fragment +=   '<img alt="' + badges[index].description + '" height="' + width + '" width="' + height + '" src="' + badges[index].badge + '"/>';
+          fragment += '</a>';
+        }
+
+        t.innerHTML = fragment;
+      }
+      return {
+        showBadges: function(options){
+          $.ajax({
+              url: 'http://coderwall.com/' + options.user + '.json?callback=?'
+            , type: 'jsonp'
+            , error: function (err) { $(options.target + ' li.loading').addClass('error').text("Error loading feed"); }
+            , success: function(res) {
+                render(options, res.data.badges);
+            }
+          });
+        }
+      };
+    })();
+
+    $.domReady(function(){
+      if (!window.jXHR){
+        var jxhr = document.createElement('script');
+        jxhr.type = 'text/javascript';
+        jxhr.src = '/javascripts/libs/jXHR.js';
+        var s = document.getElementsByTagName('script')[0];
+        s.parentNode.insertBefore(jxhr, s);
+      }
+      if (!window.$){
+        var b = document.createElement('script');
+        b.type = 'text/javascript';
+        b.src = '/javascripts/ender.js';
+        var sc = document.getElementsByTagName('script')[0];
+        sc.parentNode.insertBefore(jxhr, s);
+      }
+      coderwall.showBadges({
+        user: 'djohnsonm',
+        target: '#cw_badges'
+      });
+    });
+  </script>
+  <style type="text/css">
+    .cw_badge img {
+      padding: 5px;
+      border: 0 none !important;
+      -moz-box-shadow: none !important;
+      -webkit-box-shadow: none !important;
+      -o-box-shadow: none !important;
+      box-shadow: none !important;
+    }
+  </style>
+</section>
+
+<section>
+  <h1>Tag Cloud</h1>
+      <span id="tag-cloud"><a href='/blog/categories/-net' style='font-size: 130.0%'>.NET</a> <a href='/blog/categories/3d' style='font-size: 130.0%'>3D</a> <a href='/blog/categories/blogging' style='font-size: 130.0%'>blogging</a> <a href='/blog/categories/code' style='font-size: 130.0%'>code</a> <a href='/blog/categories/css3' style='font-size: 130.0%'>css3</a> <a href='/blog/categories/f-' style='font-size: 130.0%'>f#</a> <a href='/blog/categories/functional-programming' style='font-size: 130.0%'>functional-programming</a> <a href='/blog/categories/html5' style='font-size: 160.0%'>html5</a> <a href='/blog/categories/jquery' style='font-size: 130.0%'>jQuery</a> <a href='/blog/categories/migrated' style='font-size: 130.0%'>migrated</a> <a href='/blog/categories/node-js' style='font-size: 130.0%'>node.js</a> <a href='/blog/categories/ruby' style='font-size: 130.0%'>ruby</a> <a href='/blog/categories/silverlight' style='font-size: 130.0%'>silverlight</a> <a href='/blog/categories/subtle-patterns' style='font-size: 130.0%'>subtle-patterns</a> <a href='/blog/categories/testing' style='font-size: 130.0%'>testing</a> <a href='/blog/categories/twitter-bootstrap' style='font-size: 130.0%'>twitter-bootstrap</a> <a href='/blog/categories/watir' style='font-size: 130.0%'>WATIR</a> <a href='/blog/categories/xna' style='font-size: 130.0%'>XNA</a> </span>
+      </section>
+
+<section>
+  <h1>Categories</h1>
+      <ul id="category-list"><li><a href='/blog/categories/-net'>.NET (1)</a></li><li><a href='/blog/categories/3d'>3D (1)</a></li><li><a href='/blog/categories/blogging'>blogging (1)</a></li><li><a href='/blog/categories/code'>code (1)</a></li><li><a href='/blog/categories/css3'>css3 (1)</a></li><li><a href='/blog/categories/f-'>f# (1)</a></li><li><a href='/blog/categories/functional-programming'>functional-programming (1)</a></li><li><a href='/blog/categories/html5'>html5 (2)</a></li><li><a href='/blog/categories/jquery'>jQuery (1)</a></li><li><a href='/blog/categories/migrated'>migrated (1)</a></li><li><a href='/blog/categories/node-js'>node.js (1)</a></li><li><a href='/blog/categories/ruby'>ruby (1)</a></li><li><a href='/blog/categories/silverlight'>silverlight (1)</a></li><li><a href='/blog/categories/subtle-patterns'>subtle-patterns (1)</a></li><li><a href='/blog/categories/testing'>testing (1)</a></li><li><a href='/blog/categories/twitter-bootstrap'>twitter-bootstrap (1)</a></li><li><a href='/blog/categories/watir'>WATIR (1)</a></li><li><a href='/blog/categories/xna'>XNA (1)</a></li></ul>
+      </section>
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2012 - david m. johnson -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'djohnsonm';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://davidmjohnson.me/blog/2011/05/26/silverlight-3d-part-one/';
+        var disqus_url = 'http://davidmjohnson.me/blog/2011/05/26/silverlight-3d-part-one/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+      script.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+    })();
+  </script>
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

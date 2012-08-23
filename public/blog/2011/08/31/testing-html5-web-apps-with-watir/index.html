@@ -5,11 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Category: html5 - david m. johnson</title>
+  <title>Testing HTML5 Web Apps with WATIR - david m. johnson</title>
   <meta name="author" content="david m. johnson">
 
   
-  <meta name="description" content="Category: html5">
+  <meta name="description" content="What is WATIR? Watir means “Web Application Testing in Ruby.” It’s an easy way to automate the testing of your Web Apps through a Ruby interactive &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://davidmjohnson.meblog/categories/html5/">
+  <link rel="canonical" href="http://davidmjohnson.me/blog/2011/08/31/testing-html5-web-apps-with-watir/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -76,53 +76,179 @@
   <div id="main">
     <div id="content">
       <div>
-<article role="article">
+<article class="hentry" role="article">
   
   <header>
-    <h1 class="entry-title">Category: Html5</h1>
+    
+      <h1 class="entry-title">Testing HTML5 Web Apps With WATIR</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-08-31T13:59:00-05:00" pubdate data-updated="true">Aug 31<span>st</span>, 2011</time>
+        
+         | <a href="#disqus_thread">Comments</a>
+        
+      </p>
     
   </header>
-  
-  <div id="blog-archives" class="category">
 
 
+<div class="entry-content"><p><img src="https://dl.dropbox.com/u/10021156/blog/InteractiveRuby.png"></p>
 
-  
-  <h2>2012</h2>
+<h2>What is WATIR?</h2>
 
-<article>
-  
-<h1><a href="/blog/2012/05/12/roll-your-own-twitter-feed-with-backbone-dot-js/">Roll your own Twitter Feed with Backbone.js</a></h1>
-<time datetime="2012-05-12T09:51:00-05:00" pubdate><span class='month'>May</span> <span class='day'>12</span> <span class='year'>2012</span></time>
+<p>Watir means “Web Application Testing in Ruby.” It’s an easy way to automate the testing of your Web Apps through a Ruby interactive console. Watir will click buttons, fill in forms, navigate to pages, you name it. It’s also compatible with all major browsers.</p>
 
-<footer>
-  <span class="categories">posted in <a class='category' href='/blog/categories/css3/'>css3</a>, <a class='category' href='/blog/categories/html5/'>html5</a>, <a class='category' href='/blog/categories/jquery/'>jQuery</a>, <a class='category' href='/blog/categories/node-js/'>node.js</a>, <a class='category' href='/blog/categories/subtle-patterns/'>subtle-patterns</a>, <a class='category' href='/blog/categories/twitter-bootstrap/'>twitter-bootstrap</a></span>
-</footer>
+<h2>How do I get started?</h2>
+
+<p>So let’s say hypothetically you have an HTML5 web app using jQuery Mobile running on top of ASP.NET MVC 3. A quick and easy way to test the UI functionality of a new user registration would be to use Watir.</p>
+
+<h2>The Test</h2>
+
+<p><video width='640' height='320' preload='none' controls poster=' http://s3.imathis.com/video/zero-to-fancy-buttons.png'><source src='http://s3.imathis.com/video/zero-to-fancy-buttons.mp4' type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"'/></video></p>
+
+<figure class='code'><figcaption><span>The Code </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="c1">#INTERACTIVE TESTING WITH RUBY GEMS</span>
+</span><span class='line'><span class="c1">#LOAD UP RUBY GEMS, Watir and Watir-webdriver</span>
+</span><span class='line'><span class="nb">require</span> <span class="s1">&#39;rubygems&#39;</span>
+</span><span class='line'><span class="c1">#this is for IE</span>
+</span><span class='line'><span class="nb">require</span> <span class="s1">&#39;watir&#39;</span>
+</span><span class='line'><span class="c1">#this is for Chrome</span>
+</span><span class='line'><span class="c1">#require &#39;watir-webdriver&#39;</span>
+</span><span class='line'><span class="c1">#load Browser</span>
+</span><span class='line'><span class="n">b</span> <span class="o">=</span> <span class="no">Watir</span><span class="o">::</span><span class="no">Browser</span><span class="o">.</span><span class="n">new</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">#go to URL</span>
+</span><span class='line'><span class="n">b</span><span class="o">.</span><span class="n">goto</span> <span class="s1">&#39;http://watirtesting.apphb.com/&#39;</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">#Select the Register Link</span>
+</span><span class='line'><span class="n">l</span> <span class="o">=</span> <span class="n">b</span><span class="o">.</span><span class="n">link</span><span class="p">(</span><span class="ss">:name</span><span class="p">,</span><span class="s2">&quot;Register&quot;</span><span class="p">)</span>
+</span><span class='line'><span class="n">l</span><span class="o">.</span><span class="n">exists?</span>
+</span><span class='line'><span class="n">l</span><span class="o">.</span><span class="n">click</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">##Populate Register Fields</span>
+</span><span class='line'><span class="n">b</span><span class="o">.</span><span class="n">text_field</span><span class="p">(</span><span class="ss">:name</span><span class="p">,</span> <span class="s2">&quot;UserName&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s2">&quot;Fake Name&quot;</span><span class="p">)</span>
+</span><span class='line'><span class="n">b</span><span class="o">.</span><span class="n">text_field</span><span class="p">(</span><span class="ss">:name</span><span class="p">,</span> <span class="s2">&quot;Email&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s2">&quot;SampleUser@SampleUser.org&quot;</span><span class="p">)</span>
+</span><span class='line'><span class="n">b</span><span class="o">.</span><span class="n">text_field</span><span class="p">(</span><span class="ss">:name</span><span class="p">,</span> <span class="s2">&quot;Password&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s2">&quot;Password12345&quot;</span><span class="p">)</span>
+</span><span class='line'><span class="n">b</span><span class="o">.</span><span class="n">text_field</span><span class="p">(</span><span class="ss">:name</span><span class="p">,</span> <span class="s2">&quot;ConfirmPassword&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s2">&quot;Password12345&quot;</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">##Create New User</span>
+</span><span class='line'><span class="n">b</span><span class="o">.</span><span class="n">button</span><span class="p">(</span><span class="ss">:value</span> <span class="o">=&gt;</span> <span class="s1">&#39;Register&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">click</span>
+</span></code></pre></td></tr></table></div></figure>
 
 
-</article>
+<h2>Who uses WATIR?</h2>
 
+<p>Facebook
+SAP
+Oracle
+Yahoo
+Expedia</p>
 
+<h2>Get WATIR</h2>
 
-  
-  <h2>2011</h2>
-
-<article>
-  
-<h1><a href="/blog/2011/08/31/testing-html5-web-apps-with-watir/">Testing HTML5 Web Apps with WATIR</a></h1>
-<time datetime="2011-08-31T13:59:00-05:00" pubdate><span class='month'>Aug</span> <span class='day'>31</span> <span class='year'>2011</span></time>
-
-<footer>
-  <span class="categories">posted in <a class='category' href='/blog/categories/watir/'>WATIR</a>, <a class='category' href='/blog/categories/html5/'>html5</a>, <a class='category' href='/blog/categories/ruby/'>ruby</a>, <a class='category' href='/blog/categories/testing/'>testing</a></span>
-</footer>
-
-
-</article>
-
+<p>Watir can be downloaded. You’ll need to install ruby as well. All watir commands can be run from the Ruby Interactive Console.</p>
 </div>
 
+
+  <footer>
+    <p class="meta">
+      
   
+
+<span class="byline author vcard">Posted by <span class="fn">david m. johnson</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-08-31T13:59:00-05:00" pubdate data-updated="true">Aug 31<span>st</span>, 2011</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/watir/'>WATIR</a>, <a class='category' href='/blog/categories/html5/'>html5</a>, <a class='category' href='/blog/categories/ruby/'>ruby</a>, <a class='category' href='/blog/categories/testing/'>testing</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://davidmjohnson.me/blog/2011/08/31/testing-html5-web-apps-with-watir/" data-via="djohnsonm" data-counturl="http://davidmjohnson.me/blog/2011/08/31/testing-html5-web-apps-with-watir/" >Tweet</a>
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+    <div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2011/08/11/getting-started-with-f-number/" title="Previous Post: Getting started with F#">&laquo; Getting started with F#</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2012/05/12/roll-your-own-twitter-feed-with-backbone-dot-js/" title="Next Post: Roll your own Twitter Feed with Backbone.js">Roll your own Twitter Feed with Backbone.js &raquo;</a>
+      
+    </p>
+  </footer>
 </article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
 
 </div>
 
@@ -323,7 +449,10 @@
       var disqus_shortname = 'djohnsonm';
       
         
-        var disqus_script = 'count.js';
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://davidmjohnson.me/blog/2011/08/31/testing-html5-web-apps-with-watir/';
+        var disqus_url = 'http://davidmjohnson.me/blog/2011/08/31/testing-html5-web-apps-with-watir/';
+        var disqus_script = 'embed.js';
       
     (function () {
       var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;

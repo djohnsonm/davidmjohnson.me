@@ -4,7 +4,7 @@
   <title><![CDATA[Category: html5 | david m. johnson]]></title>
   <link href="http://davidmjohnson.me/blog/categories/html5/atom.xml" rel="self"/>
   <link href="http://davidmjohnson.me/"/>
-  <updated>2012-08-23T03:31:45-05:00</updated>
+  <updated>2012-08-23T16:54:25-05:00</updated>
   <id>http://davidmjohnson.me/</id>
   <author>
     <name><![CDATA[david m. johnson]]></name>
@@ -816,6 +816,126 @@ The resulting data will then be passed through the parse method, into the render
 
 <p>Get the source here: <iframe src="http://ghbtns.com/github-btn.html?user=djohnsonm&repo=Twitter-Feed&type=fork&count=true"
   allowtransparency="true" frameborder="0" scrolling="0" width="95px" height="20px"></iframe></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Testing HTML5 Web Apps with WATIR]]></title>
+    <link href="http://davidmjohnson.me/blog/2011/08/31/testing-html5-web-apps-with-watir/"/>
+    <updated>2011-08-31T13:59:00-05:00</updated>
+    <id>http://davidmjohnson.me/blog/2011/08/31/testing-html5-web-apps-with-watir</id>
+    <content type="html"><![CDATA[<p><img src="https://dl.dropbox.com/u/10021156/blog/InteractiveRuby.png"></p>
+
+<h2>What is WATIR?</h2>
+
+<p>Watir means “Web Application Testing in Ruby.” It’s an easy way to automate the testing of your Web Apps through a Ruby interactive console. Watir will click buttons, fill in forms, navigate to pages, you name it. It’s also compatible with all major browsers.</p>
+
+<h2>How do I get started?</h2>
+
+<p>So let’s say hypothetically you have an HTML5 web app using jQuery Mobile running on top of ASP.NET MVC 3. A quick and easy way to test the UI functionality of a new user registration would be to use Watir.</p>
+
+<h2>The Test</h2>
+
+<p><video width='640' height='320' preload='none' controls poster=' http://s3.imathis.com/video/zero-to-fancy-buttons.png'><source src='http://s3.imathis.com/video/zero-to-fancy-buttons.mp4' type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"'/></video></p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>The Code </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="o">&lt;</span><span class="sr">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;h1&gt;INTERACTIVE TESTING WITH RUBY GEMS&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="no">LOAD</span> <span class="no">UP</span> <span class="no">RUBY</span> <span class="no">GEMS</span><span class="p">,</span> <span class="no">Watir</span> <span class="ow">and</span> <span class="no">Watir</span><span class="o">-</span><span class="n">webdriver</span><span class="o">&lt;</span><span class="sr">/h1&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;p&gt;require &#39;rubygems&#39;&lt;/</span><span class="nb">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="n">this</span> <span class="n">is</span> <span class="k">for</span> <span class="no">IE</span><span class="o">&lt;</span><span class="sr">/h1&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;p&gt;require &#39;watir&#39;&lt;/</span><span class="nb">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="n">this</span> <span class="n">is</span> <span class="k">for</span> <span class="no">Chrome</span><span class="o">&lt;</span><span class="sr">/h1&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;h1&gt;require &#39;watir-webdriver&#39;&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="nb">load</span> <span class="no">Browser</span><span class="o">&lt;</span><span class="sr">/h1&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;p&gt;b = Watir::Browser.new&lt;/</span><span class="nb">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="n">go</span> <span class="n">to</span> <span class="no">URL</span><span class="o">&lt;</span><span class="sr">/h1&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;p&gt;b.goto &#39;http:/</span><span class="o">/</span><span class="n">watirtesting</span><span class="o">.</span><span class="n">apphb</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="s1">&#39;&lt;/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="s1">&lt;h1&gt;Select the Register Link&lt;/h1&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="s1">&lt;p&gt;l = b.link(:name,&quot;Register&quot;)</span>
+</span><span class='line'><span class="s1">l.exists?</span>
+</span><span class='line'><span class="s1">l.click&lt;/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="s1">&lt;h2&gt;Populate Register Fields&lt;/h2&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="s1">&lt;p&gt;b.text_field(:name, &quot;UserName&quot;).set(&quot;Fake Name&quot;)</span>
+</span><span class='line'><span class="s1">b.text_field(:name, &quot;Email&quot;).set(&quot;SampleUser@SampleUser.org&quot;)</span>
+</span><span class='line'><span class="s1">b.text_field(:name, &quot;Password&quot;).set(&quot;Password12345&quot;)</span>
+</span><span class='line'><span class="s1">b.text_field(:name, &quot;ConfirmPassword&quot;).set(&quot;Password12345&quot;)&lt;/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="s1">&lt;h2&gt;Create New User&lt;/h2&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="s1">&lt;p&gt;b.button(:value =&gt; &#39;</span><span class="no">Register</span><span class="err">&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">click</span><span class="o">&lt;</span><span class="sr">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;p&gt;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<h2>Who uses WATIR?</h2>
+
+<p>Facebook
+SAP
+Oracle
+Yahoo
+Expedia</p>
+
+<h2>Get WATIR</h2>
+
+<p>Watir can be downloaded. You’ll need to install ruby as well. All watir commands can be run from the Ruby Interactive Console.</p>
 ]]></content>
   </entry>
   

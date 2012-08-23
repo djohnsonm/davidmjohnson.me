@@ -1,8 +1,16 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <urlset xmlns='http://www.sitemaps.org/schemas/sitemap/0.9'>
     <url>
+        <loc>http://davidmjohnson.me/blog/2011/05/26/silverlight-3d-part-one/</loc>
+        <lastmod>2012-08-23T16:54:23-05:00</lastmod>
+    </url>
+    <url>
         <loc>http://davidmjohnson.me/blog/2011/08/11/getting-started-with-f-number/</loc>
         <lastmod>2012-08-22T01:20:17-05:00</lastmod>
+    </url>
+    <url>
+        <loc>http://davidmjohnson.me/blog/2011/08/31/testing-html5-web-apps-with-watir/</loc>
+        <lastmod>2012-08-23T14:29:48-05:00</lastmod>
     </url>
     <url>
         <loc>
@@ -16,10 +24,10 @@
     </url>
     <url>
         <loc>http://davidmjohnson.me/blog/archives/</loc>
-        <lastmod>2012-08-22T10:48:06-05:00</lastmod>
+        <lastmod>2012-08-23T16:54:23-05:00</lastmod>
     </url>
     <url>
         <loc>http://davidmjohnson.me/</loc>
-        <lastmod>2012-08-22T10:48:06-05:00</lastmod>
+        <lastmod>2012-08-23T16:54:23-05:00</lastmod>
     </url>
 </urlset>
