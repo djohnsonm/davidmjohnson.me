@@ -1,0 +1,794 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Silverlight 3D: Part Two - david m. johnson</title>
+  <meta name="author" content="david m. johnson">
+
+  
+  <meta name="description" content="Why should you care? 3D Photorealism is nothing new. Plenty of companies have been substituting photos of their product line for creating photo- &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://davidmjohnson.me/blog/2011/06/11/silverlight-3d-part-two/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="david m. johnson" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-34145525-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">david m. johnson</a></h1>
+  
+    <h2>[code] -> [tangents] -> [stuff] -> dmj</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:davidmjohnson.me" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="http://careers.stackoverflow.com/davidmjohnson">Resume</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Silverlight 3D: Part Two</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-06-11T02:47:00-05:00" pubdate data-updated="true">Jun 11<span>th</span>, 2011</time>
+        
+         | <a href="#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p><img src="https://dl.dropbox.com/u/10021156/blog/Ball2.png"></p>
+
+<h2>Why should you care?</h2>
+
+<p>3D Photorealism is nothing new. Plenty of companies have been substituting photos of their product line for creating photo-realistic 3D renditions instead (big cost savings — Apple is a great example of this). The only issue is that these products are typically displayed in 2D on a company website. This means real-time 3D manipulation is not possible outside of a QuickTime plug-in (which usually displays 2D images) or a 2D flipbook of 3D images where all positions are predefined. Enter Silverlight 5 and Babylon Toolkit. Instead of rendering out content as 2D images, the 3D file format (.obj in our case) can be maintained and manipulated during the web app’s runtime thanks to the new 3D features of Silverlight 5 and the extensibility of the Babylon Toolkit.</p>
+
+<h2>Importing 3D Models into your Silverlight 5 project</h2>
+
+<p>In our previous post we went through a high-level overview of how to manually implement 3D graphics in Silverlight 5 as well as a discussion about how to program against the GPU. We concluded that there are three ways to implement 3D effects in Silverlight 5.</p>
+
+<p>1 – Plot all your vertices individually (by hand).
+2 – Plot your vertices algorithmically.
+3 – Import a 3D model into your Silverlight application via a third-party API.</p>
+
+<p>For this next example we will use a 3D modeling app named “Modo” to create a soccer ball model. This model will then be used as 3D content in our Silverlight App.</p>
+
+<h2>3D Apps</h2>
+
+<p>Back in the day I used to Modo quite a bit (Here is the only thing I ever made that was worth looking at). For those of you who don’t know Modo, it’s a next-gen 3D modeling, painting, animating and rendering package that is used by many professionals in the 3D industry including Pixar. (Note: Any 3D application that is capable of producing the .OBJ file format will suffice for our purposes:</p>
+
+<ul>
+<li>3D Studio Max</li>
+<li>Blender</li>
+<li>Maya</li>
+<li>Sketchup
+all seem to be just as capable). If you want to go ahead and create the Soccer Ball using Modo or another 3D program click here for a walkthrough or you can download the whole project here instead.</li>
+</ul>
+
+
+<p>Final Result
+<img src="https://dl.dropbox.com/u/10021156/blog/Modo-1024x626.jpg"></p>
+
+<h2>Babylon</h2>
+
+<p>After you have created the model, you will need to download the Babylon Importer Toolkit (big thanks to David Catuhe). The Babylon Toolkit gives us access to XNA-like functionality that would only be accessible in the full version of the XNA game studio. This means we don’t have to go about the process of plotting our vertices individually or even worrying about pixel shaders because Catuhe’s Babylon Toolkit provides abstractions on top of these granular aspects of Silverlight 3D.</p>
+
+<h2>Putting it all together</h2>
+
+<p>After you download the toolkit, create a new project and add the assemblies found inside the toolkit to your Silverlight application. Next, import your .OBJ, .MTL (material) files and .JPG (texture files – if necessary) into your silverlight project and set their build action to “resource.”</p>
+
+<p><img src="https://dl.dropbox.com/u/10021156/blog/Build-Action-Resource.png"></p>
+
+<p>Now you should be able to grab these items as streams and use the Babylon API to call the Import function asynchronously. For a fuller demonstration of this process check out the Babylon sample project of a 3D Viper from Battlestar Galactica and see the code below.</p>
+
+<figure class='code'><figcaption><span>XAML Side </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='xml'><span class='line'><span class="nt">&lt;Grid</span> <span class="na">x:Name=</span><span class="s">&quot;LayoutRoot&quot;</span> <span class="na">Background=</span><span class="s">&quot;Gray&quot;</span> <span class="na">MouseMove=</span><span class="s">&quot;drawingSurface_MouseMove&quot;</span> <span class="na">MouseLeftButtonDown=</span><span class="s">&quot;LayoutRoot_MouseLeftButtonDown&quot;</span> <span class="na">MouseLeftButtonUp=</span><span class="s">&quot;LayoutRoot_MouseLeftButtonUp&quot;</span> <span class="na">MouseEnter=</span><span class="s">&quot;LayoutRoot_MouseEnter&quot;</span> <span class="na">MouseWheel=</span><span class="s">&quot;LayoutRoot_MouseWheel&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;DrawingSurface</span>  <span class="na">Name=</span><span class="s">&quot;drawingSurface&quot;</span> <span class="na">Draw=</span><span class="s">&quot;DrawingSurface_Draw&quot;</span> <span class="na">SizeChanged=</span><span class="s">&quot;drawingSurface_SizeChanged&quot;</span><span class="nt">/&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;StackPanel</span> <span class="na">Name=</span><span class="s">&quot;waitBar&quot;</span> <span class="na">VerticalAlignment=</span><span class="s">&quot;Center&quot;</span> <span class="na">Visibility=</span><span class="s">&quot;Collapsed&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;TextBlock</span> <span class="na">Text=</span><span class="s">&quot;Loading...Please wait&quot;</span> <span class="na">HorizontalAlignment=</span><span class="s">&quot;Center&quot;</span><span class="nt">/&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;ProgressBar</span> <span class="na">Height=</span><span class="s">&quot;10&quot;</span> <span class="na">Minimum=</span><span class="s">&quot;0&quot;</span> <span class="na">Maximum=</span><span class="s">&quot;100&quot;</span> <span class="na">Margin=</span><span class="s">&quot;20, 10&quot;</span> <span class="na">Name=</span><span class="s">&quot;waitProgressBar&quot;</span><span class="nt">/&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;/StackPanel&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;/Grid&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span>C# Side </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+<span class='line-number'>60</span>
+<span class='line-number'>61</span>
+<span class='line-number'>62</span>
+<span class='line-number'>63</span>
+<span class='line-number'>64</span>
+<span class='line-number'>65</span>
+<span class='line-number'>66</span>
+<span class='line-number'>67</span>
+<span class='line-number'>68</span>
+<span class='line-number'>69</span>
+<span class='line-number'>70</span>
+<span class='line-number'>71</span>
+<span class='line-number'>72</span>
+<span class='line-number'>73</span>
+<span class='line-number'>74</span>
+<span class='line-number'>75</span>
+<span class='line-number'>76</span>
+<span class='line-number'>77</span>
+<span class='line-number'>78</span>
+<span class='line-number'>79</span>
+<span class='line-number'>80</span>
+<span class='line-number'>81</span>
+<span class='line-number'>82</span>
+<span class='line-number'>83</span>
+<span class='line-number'>84</span>
+<span class='line-number'>85</span>
+<span class='line-number'>86</span>
+<span class='line-number'>87</span>
+<span class='line-number'>88</span>
+<span class='line-number'>89</span>
+<span class='line-number'>90</span>
+<span class='line-number'>91</span>
+<span class='line-number'>92</span>
+<span class='line-number'>93</span>
+<span class='line-number'>94</span>
+<span class='line-number'>95</span>
+<span class='line-number'>96</span>
+<span class='line-number'>97</span>
+<span class='line-number'>98</span>
+<span class='line-number'>99</span>
+<span class='line-number'>100</span>
+<span class='line-number'>101</span>
+<span class='line-number'>102</span>
+<span class='line-number'>103</span>
+<span class='line-number'>104</span>
+<span class='line-number'>105</span>
+<span class='line-number'>106</span>
+<span class='line-number'>107</span>
+<span class='line-number'>108</span>
+<span class='line-number'>109</span>
+<span class='line-number'>110</span>
+<span class='line-number'>111</span>
+<span class='line-number'>112</span>
+<span class='line-number'>113</span>
+<span class='line-number'>114</span>
+<span class='line-number'>115</span>
+<span class='line-number'>116</span>
+<span class='line-number'>117</span>
+<span class='line-number'>118</span>
+<span class='line-number'>119</span>
+<span class='line-number'>120</span>
+<span class='line-number'>121</span>
+<span class='line-number'>122</span>
+<span class='line-number'>123</span>
+<span class='line-number'>124</span>
+<span class='line-number'>125</span>
+<span class='line-number'>126</span>
+<span class='line-number'>127</span>
+<span class='line-number'>128</span>
+<span class='line-number'>129</span>
+<span class='line-number'>130</span>
+<span class='line-number'>131</span>
+<span class='line-number'>132</span>
+<span class='line-number'>133</span>
+<span class='line-number'>134</span>
+<span class='line-number'>135</span>
+<span class='line-number'>136</span>
+<span class='line-number'>137</span>
+<span class='line-number'>138</span>
+<span class='line-number'>139</span>
+<span class='line-number'>140</span>
+<span class='line-number'>141</span>
+<span class='line-number'>142</span>
+<span class='line-number'>143</span>
+<span class='line-number'>144</span>
+<span class='line-number'>145</span>
+<span class='line-number'>146</span>
+<span class='line-number'>147</span>
+<span class='line-number'>148</span>
+<span class='line-number'>149</span>
+<span class='line-number'>150</span>
+<span class='line-number'>151</span>
+</pre></td><td class='code'><pre><code class='csharp'><span class='line'><span class="k">namespace</span> <span class="nn">Footballs</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="k">public</span> <span class="k">partial</span> <span class="k">class</span> <span class="nc">MainPage</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="n">Model</span> <span class="n">model</span><span class="p">;</span>
+</span><span class='line'>        <span class="kt">bool</span> <span class="n">mouseLeftDown</span><span class="p">;</span>
+</span><span class='line'>        <span class="n">Point</span> <span class="n">startPosition</span><span class="p">;</span>
+</span><span class='line'>        <span class="k">readonly</span> <span class="n">OrbitCamera</span> <span class="n">camera</span> <span class="p">=</span> <span class="k">new</span> <span class="n">OrbitCamera</span> <span class="p">{</span> <span class="n">Radius</span> <span class="p">=</span> <span class="m">20</span> <span class="p">};</span>
+</span><span class='line'>        <span class="n">StatesManager</span> <span class="n">statesManager</span><span class="p">;</span>
+</span><span class='line'>        <span class="n">GraphicsDevice</span> <span class="n">device</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="k">public</span> <span class="nf">MainPage</span><span class="p">()</span>
+</span><span class='line'>        <span class="p">{</span>
+</span><span class='line'>            <span class="n">InitializeComponent</span><span class="p">();</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="k">private</span> <span class="k">void</span> <span class="nf">DrawingSurface_Draw</span><span class="p">(</span><span class="kt">object</span> <span class="n">sender</span><span class="p">,</span> <span class="n">DrawEventArgs</span> <span class="n">e</span><span class="p">)</span>
+</span><span class='line'>        <span class="p">{</span>
+</span><span class='line'>            <span class="n">device</span> <span class="p">=</span> <span class="n">e</span><span class="p">.</span><span class="n">GraphicsDevice</span><span class="p">;</span>
+</span><span class='line'>            <span class="k">if</span> <span class="p">(</span><span class="n">model</span> <span class="p">==</span> <span class="k">null</span><span class="p">)</span>
+</span><span class='line'>            <span class="p">{</span>  <span class="c1">//This will spawn a new thread to grab and initialize our model</span>
+</span><span class='line'>                <span class="n">Dispatcher</span><span class="p">.</span><span class="n">BeginInvoke</span><span class="p">(()</span> <span class="p">=&gt;</span> <span class="n">InitModel</span><span class="p">(</span><span class="n">e</span><span class="p">.</span><span class="n">GraphicsDevice</span><span class="p">));</span>
+</span><span class='line'>                <span class="n">statesManager</span> <span class="p">=</span> <span class="k">new</span> <span class="n">StatesManager</span><span class="p">(</span><span class="n">e</span><span class="p">.</span><span class="n">GraphicsDevice</span><span class="p">);</span>
+</span><span class='line'>            <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>            <span class="k">if</span> <span class="p">(</span><span class="n">model</span> <span class="p">==</span> <span class="k">null</span><span class="p">)</span>
+</span><span class='line'>                <span class="k">return</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>            <span class="n">DateTime</span> <span class="n">start</span> <span class="p">=</span> <span class="n">DateTime</span><span class="p">.</span><span class="n">Now</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>            <span class="c1">// States</span>
+</span><span class='line'>            <span class="n">statesManager</span><span class="p">.</span><span class="n">DepthBufferEnable</span> <span class="p">=</span> <span class="k">true</span><span class="p">;</span>
+</span><span class='line'>            <span class="n">statesManager</span><span class="p">.</span><span class="n">CullMode</span> <span class="p">=</span> <span class="n">CullMode</span><span class="p">.</span><span class="n">None</span><span class="p">;</span>
+</span><span class='line'>            <span class="n">statesManager</span><span class="p">.</span><span class="n">ApplyDepthStencilState</span><span class="p">();</span>
+</span><span class='line'>            <span class="n">statesManager</span><span class="p">.</span><span class="n">ApplyRasterizerState</span><span class="p">();</span>
+</span><span class='line'>            <span class="n">e</span><span class="p">.</span><span class="n">GraphicsDevice</span><span class="p">.</span><span class="n">BlendState</span> <span class="p">=</span> <span class="n">BlendState</span><span class="p">.</span><span class="n">AlphaBlend</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>      <span class="c1">// Draw</span>
+</span><span class='line'>     <span class="n">e</span><span class="p">.</span><span class="n">GraphicsDevice</span><span class="p">.</span><span class="n">Clear</span><span class="p">(</span><span class="n">ClearOptions</span><span class="p">.</span><span class="n">Target</span> <span class="p">|</span> <span class="n">ClearOptions</span><span class="p">.</span><span class="n">DepthBuffer</span><span class="p">,</span> <span class="k">new</span> <span class="n">Color</span><span class="p">(</span><span class="m">0</span><span class="p">,</span> <span class="m">0</span><span class="p">,</span> <span class="m">0</span><span class="p">,</span> <span class="m">0</span><span class="p">),</span> <span class="m">1.0f</span><span class="p">,</span> <span class="m">0</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>          <span class="c1">//We use BasicEffect instead of manually using pixel/vertex shader</span>
+</span><span class='line'>            <span class="k">foreach</span> <span class="p">(</span><span class="n">ModelMesh</span> <span class="n">mesh</span> <span class="k">in</span> <span class="n">model</span><span class="p">.</span><span class="n">Meshes</span><span class="p">)</span>
+</span><span class='line'>            <span class="p">{</span>
+</span><span class='line'>                <span class="k">foreach</span> <span class="p">(</span><span class="n">BasicEffect</span> <span class="n">basicEffect</span> <span class="k">in</span> <span class="n">mesh</span><span class="p">.</span><span class="n">Effects</span><span class="p">)</span>
+</span><span class='line'>                <span class="p">{</span>
+</span><span class='line'>                    <span class="n">basicEffect</span><span class="p">.</span><span class="n">SceneAmbientColor</span> <span class="p">=</span> <span class="k">new</span> <span class="n">Color</span><span class="p">(</span><span class="m">0.3f</span><span class="p">,</span> <span class="m">0.3f</span><span class="p">,</span> <span class="m">0.3f</span><span class="p">,</span> <span class="m">0</span><span class="p">);</span>
+</span><span class='line'>                    <span class="n">basicEffect</span><span class="p">.</span><span class="n">World</span> <span class="p">=</span> <span class="n">Matrix</span><span class="p">.</span><span class="n">Identity</span><span class="p">;</span>
+</span><span class='line'>                    <span class="n">basicEffect</span><span class="p">.</span><span class="n">View</span> <span class="p">=</span> <span class="n">camera</span><span class="p">.</span><span class="n">View</span><span class="p">;</span>
+</span><span class='line'>                    <span class="n">basicEffect</span><span class="p">.</span><span class="n">Projection</span> <span class="p">=</span> <span class="n">camera</span><span class="p">.</span><span class="n">Projection</span><span class="p">;</span>
+</span><span class='line'>                    <span class="n">basicEffect</span><span class="p">.</span><span class="n">LightPosition</span> <span class="p">=</span> <span class="n">camera</span><span class="p">.</span><span class="n">Position</span> <span class="p">+</span> <span class="k">new</span> <span class="n">Vector3</span><span class="p">(</span><span class="m">1</span><span class="p">,</span> <span class="m">5</span><span class="p">,</span> <span class="m">3</span><span class="p">);</span>
+</span><span class='line'>                    <span class="n">basicEffect</span><span class="p">.</span><span class="n">CameraPosition</span> <span class="p">=</span> <span class="n">camera</span><span class="p">.</span><span class="n">Position</span><span class="p">;</span>
+</span><span class='line'>                <span class="p">}</span>
+</span><span class='line'>            <span class="p">}</span>
+</span><span class='line'>            <span class="n">model</span><span class="p">.</span><span class="n">Draw</span><span class="p">();</span>
+</span><span class='line'>            <span class="n">camera</span><span class="p">.</span><span class="n">ApplyInertia</span><span class="p">();</span>
+</span><span class='line'>
+</span><span class='line'>            <span class="kt">double</span> <span class="n">duration</span> <span class="p">=</span> <span class="p">(</span><span class="kt">double</span><span class="p">)</span><span class="n">DateTime</span><span class="p">.</span><span class="n">Now</span><span class="p">.</span><span class="n">Subtract</span><span class="p">(</span><span class="n">start</span><span class="p">).</span><span class="n">Ticks</span> <span class="p">/</span> <span class="n">TimeSpan</span><span class="p">.</span><span class="n">TicksPerMillisecond</span><span class="p">;</span>
+</span><span class='line'>            <span class="kt">int</span> <span class="n">verticesCount</span> <span class="p">=</span> <span class="n">model</span><span class="p">.</span><span class="n">Meshes</span><span class="p">.</span><span class="n">Sum</span><span class="p">(</span><span class="n">v</span> <span class="p">=&gt;</span> <span class="n">v</span><span class="p">.</span><span class="n">VerticesCount</span><span class="p">);</span>
+</span><span class='line'>            <span class="n">e</span><span class="p">.</span><span class="n">InvalidateSurface</span><span class="p">();</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="k">private</span> <span class="k">void</span> <span class="nf">InitModel</span><span class="p">(</span><span class="n">GraphicsDevice</span> <span class="n">device</span><span class="p">)</span>
+</span><span class='line'>        <span class="p">{</span>
+</span><span class='line'><span class="n">Stream</span> <span class="n">objStream</span> <span class="p">=</span> <span class="n">Application</span><span class="p">.</span><span class="n">GetResourceStream</span><span class="p">(</span><span class="k">new</span> <span class="n">Uri</span><span class="p">(</span><span class="s">&quot;/Footballs;component/Models/Brazile.obj&quot;</span><span class="p">,</span> <span class="n">UriKind</span><span class="p">.</span><span class="n">Relative</span><span class="p">)).</span><span class="n">Stream</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>            <span class="n">ObjImporter</span> <span class="n">importer</span> <span class="p">=</span> <span class="k">new</span> <span class="n">ObjImporter</span><span class="p">();</span>
+</span><span class='line'>
+</span><span class='line'>            <span class="n">importer</span><span class="p">.</span><span class="n">OnImportCompleted</span> <span class="p">+=</span> <span class="n">m</span> <span class="p">=&gt;</span>
+</span><span class='line'>            <span class="p">{</span>
+</span><span class='line'>                <span class="n">waitBar</span><span class="p">.</span><span class="n">Visibility</span> <span class="p">=</span> <span class="n">Visibility</span><span class="p">.</span><span class="n">Collapsed</span><span class="p">;</span>
+</span><span class='line'>                <span class="n">model</span> <span class="p">=</span> <span class="n">m</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>                <span class="n">drawingSurface</span><span class="p">.</span><span class="n">Invalidate</span><span class="p">();</span>
+</span><span class='line'>            <span class="p">};</span>
+</span><span class='line'>
+</span><span class='line'>            <span class="c1">// Report loading progress</span>
+</span><span class='line'>            <span class="n">importer</span><span class="p">.</span><span class="n">OnImportProgressChanged</span> <span class="p">+=</span> <span class="n">p</span> <span class="p">=&gt;</span>
+</span><span class='line'>            <span class="p">{</span>
+</span><span class='line'>                <span class="n">waitProgressBar</span><span class="p">.</span><span class="n">Value</span> <span class="p">=</span> <span class="n">p</span><span class="p">;</span>
+</span><span class='line'>            <span class="p">};</span>
+</span><span class='line'>            <span class="n">waitBar</span><span class="p">.</span><span class="n">Visibility</span> <span class="p">=</span> <span class="n">Visibility</span><span class="p">.</span><span class="n">Visible</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>            <span class="c1">//THIS IS WHERE ALL THE MAGIC HAPPENS</span>
+</span><span class='line'> <span class="n">importer</span><span class="p">.</span><span class="n">ImportAsync</span><span class="p">(</span><span class="n">objStream</span><span class="p">,</span> <span class="n">GetResourceStream</span><span class="p">,</span> <span class="n">device</span><span class="p">,</span> <span class="n">ImportationOptions</span><span class="p">.</span><span class="n">Optimize</span><span class="p">);</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">Stream</span> <span class="nf">GetResourceStream</span><span class="p">(</span><span class="kt">string</span> <span class="n">name</span><span class="p">)</span>
+</span><span class='line'>        <span class="p">{</span>
+</span><span class='line'>            <span class="k">try</span>
+</span><span class='line'>            <span class="p">{</span>
+</span><span class='line'>                <span class="k">return</span> <span class="n">Application</span><span class="p">.</span><span class="n">GetResourceStream</span><span class="p">(</span><span class="k">new</span> <span class="n">Uri</span><span class="p">(</span><span class="kt">string</span><span class="p">.</span><span class="n">Format</span><span class="p">(</span><span class="s">&quot;/Footballs;component/Models/{0}&quot;</span><span class="p">,</span> <span class="n">name</span><span class="p">),</span> <span class="n">UriKind</span><span class="p">.</span><span class="n">Relative</span><span class="p">)).</span><span class="n">Stream</span><span class="p">;</span>
+</span><span class='line'>            <span class="p">}</span>
+</span><span class='line'>            <span class="k">catch</span>
+</span><span class='line'>            <span class="p">{</span>
+</span><span class='line'>                <span class="n">Dispatcher</span><span class="p">.</span><span class="n">BeginInvoke</span><span class="p">(()</span> <span class="p">=&gt;</span> <span class="n">MessageBox</span><span class="p">.</span><span class="n">Show</span><span class="p">(</span><span class="s">&quot;Unable to find &quot;</span> <span class="p">+</span> <span class="n">name</span><span class="p">,</span> <span class="s">&quot;Error&quot;</span><span class="p">,</span> <span class="n">MessageBoxButton</span><span class="p">.</span><span class="n">OK</span><span class="p">));</span>
+</span><span class='line'>                <span class="k">return</span> <span class="k">null</span><span class="p">;</span>
+</span><span class='line'>            <span class="p">}</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">//This is the resizing section</span>
+</span><span class='line'>        <span class="cp">#region Aspect ratio</span>
+</span><span class='line'>        <span class="k">private</span> <span class="k">void</span> <span class="nf">drawingSurface_SizeChanged</span><span class="p">(</span><span class="kt">object</span> <span class="n">sender</span><span class="p">,</span> <span class="n">SizeChangedEventArgs</span> <span class="n">e</span><span class="p">)</span>
+</span><span class='line'>        <span class="p">{</span>
+</span><span class='line'>            <span class="n">ComputeAspectRatio</span><span class="p">();</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="k">void</span> <span class="nf">ComputeAspectRatio</span><span class="p">()</span>
+</span><span class='line'>        <span class="p">{</span>
+</span><span class='line'>            <span class="n">camera</span><span class="p">.</span><span class="n">AspectRatio</span> <span class="p">=</span> <span class="p">(</span><span class="kt">float</span><span class="p">)(</span><span class="n">drawingSurface</span><span class="p">.</span><span class="n">ActualWidth</span> <span class="p">/</span> <span class="n">drawingSurface</span><span class="p">.</span><span class="n">ActualHeight</span><span class="p">);</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="k">private</span> <span class="k">void</span> <span class="nf">UserControl_Loaded</span><span class="p">(</span><span class="kt">object</span> <span class="n">sender</span><span class="p">,</span> <span class="n">RoutedEventArgs</span> <span class="n">e</span><span class="p">)</span>
+</span><span class='line'>        <span class="p">{</span>
+</span><span class='line'>            <span class="n">ComputeAspectRatio</span><span class="p">();</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>        <span class="cp">#endregion</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">//This is the mouse section</span>
+</span><span class='line'>        <span class="cp">#region Mouse</span>
+</span><span class='line'>        <span class="k">private</span> <span class="k">void</span> <span class="nf">drawingSurface_MouseMove</span><span class="p">(</span><span class="kt">object</span> <span class="n">sender</span><span class="p">,</span> <span class="n">System</span><span class="p">.</span><span class="n">Windows</span><span class="p">.</span><span class="n">Input</span><span class="p">.</span><span class="n">MouseEventArgs</span> <span class="n">e</span><span class="p">)</span>
+</span><span class='line'>        <span class="p">{</span>
+</span><span class='line'>            <span class="k">if</span> <span class="p">(!</span><span class="n">mouseLeftDown</span><span class="p">)</span>
+</span><span class='line'>                <span class="k">return</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>            <span class="n">Point</span> <span class="n">currentPosition</span> <span class="p">=</span> <span class="n">e</span><span class="p">.</span><span class="n">GetPosition</span><span class="p">(</span><span class="n">drawingSurface</span><span class="p">);</span>
+</span><span class='line'>            <span class="n">camera</span><span class="p">.</span><span class="n">InertialAlpha</span> <span class="p">+=</span> <span class="p">(</span><span class="kt">float</span><span class="p">)(</span><span class="n">currentPosition</span><span class="p">.</span><span class="n">X</span> <span class="p">-</span> <span class="n">startPosition</span><span class="p">.</span><span class="n">X</span><span class="p">)</span> <span class="p">*</span> <span class="n">camera</span><span class="p">.</span><span class="n">AngularSpeed</span><span class="p">;</span>
+</span><span class='line'>            <span class="n">camera</span><span class="p">.</span><span class="n">InertialBeta</span> <span class="p">-=</span> <span class="p">(</span><span class="kt">float</span><span class="p">)(</span><span class="n">currentPosition</span><span class="p">.</span><span class="n">Y</span> <span class="p">-</span> <span class="n">startPosition</span><span class="p">.</span><span class="n">Y</span><span class="p">)</span> <span class="p">*</span> <span class="n">camera</span><span class="p">.</span><span class="n">AngularSpeed</span><span class="p">;</span>
+</span><span class='line'>            <span class="n">startPosition</span> <span class="p">=</span> <span class="n">currentPosition</span><span class="p">;</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="k">private</span> <span class="k">void</span> <span class="nf">LayoutRoot_MouseLeftButtonDown</span><span class="p">(</span><span class="kt">object</span> <span class="n">sender</span><span class="p">,</span> <span class="n">System</span><span class="p">.</span><span class="n">Windows</span><span class="p">.</span><span class="n">Input</span><span class="p">.</span><span class="n">MouseButtonEventArgs</span> <span class="n">e</span><span class="p">)</span>
+</span><span class='line'>        <span class="p">{</span>
+</span><span class='line'>            <span class="n">mouseLeftDown</span> <span class="p">=</span> <span class="k">true</span><span class="p">;</span>
+</span><span class='line'>            <span class="n">startPosition</span> <span class="p">=</span> <span class="n">e</span><span class="p">.</span><span class="n">GetPosition</span><span class="p">(</span><span class="n">drawingSurface</span><span class="p">);</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="k">private</span> <span class="k">void</span> <span class="nf">LayoutRoot_MouseLeftButtonUp</span><span class="p">(</span><span class="kt">object</span> <span class="n">sender</span><span class="p">,</span> <span class="n">System</span><span class="p">.</span><span class="n">Windows</span><span class="p">.</span><span class="n">Input</span><span class="p">.</span><span class="n">MouseButtonEventArgs</span> <span class="n">e</span><span class="p">)</span>
+</span><span class='line'>        <span class="p">{</span>
+</span><span class='line'>            <span class="n">mouseLeftDown</span> <span class="p">=</span> <span class="k">false</span><span class="p">;</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="k">private</span> <span class="k">void</span> <span class="nf">LayoutRoot_MouseEnter</span><span class="p">(</span><span class="kt">object</span> <span class="n">sender</span><span class="p">,</span> <span class="n">System</span><span class="p">.</span><span class="n">Windows</span><span class="p">.</span><span class="n">Input</span><span class="p">.</span><span class="n">MouseEventArgs</span> <span class="n">e</span><span class="p">)</span>
+</span><span class='line'>        <span class="p">{</span>
+</span><span class='line'>            <span class="n">mouseLeftDown</span> <span class="p">=</span> <span class="k">false</span><span class="p">;</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="k">private</span> <span class="k">void</span> <span class="nf">LayoutRoot_MouseWheel</span><span class="p">(</span><span class="kt">object</span> <span class="n">sender</span><span class="p">,</span> <span class="n">System</span><span class="p">.</span><span class="n">Windows</span><span class="p">.</span><span class="n">Input</span><span class="p">.</span><span class="n">MouseWheelEventArgs</span> <span class="n">e</span><span class="p">)</span>
+</span><span class='line'>        <span class="p">{</span>
+</span><span class='line'>            <span class="n">camera</span><span class="p">.</span><span class="n">Radius</span> <span class="p">-=</span> <span class="n">e</span><span class="p">.</span><span class="n">Delta</span> <span class="p">*</span> <span class="n">camera</span><span class="p">.</span><span class="n">Radius</span> <span class="p">/</span> <span class="m">1000.0f</span><span class="p">;</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>        <span class="cp">#endregion</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Conclusion</h2>
+
+<p>In this tutorial we had a brief overview of how 3D content is traditionally served on the web. We then discussed how Silverlight 5 combined with the Babylon toolkit expedites the process of dynamic content delivery while proceeding to create our own 3D model and host it in a new Silverlight 5 App. Hope this series was helpful. Questions/Comments/Concerns/Cries of Outrage? Feel free to comment.</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">david m. johnson</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-06-11T02:47:00-05:00" pubdate data-updated="true">Jun 11<span>th</span>, 2011</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/3d/'>3D</a>, <a class='category' href='/blog/categories/xna/'>XNA</a>, <a class='category' href='/blog/categories/silverlight/'>silverlight</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://davidmjohnson.me/blog/2011/06/11/silverlight-3d-part-two/" data-via="djohnsonm" data-counturl="http://davidmjohnson.me/blog/2011/06/11/silverlight-3d-part-two/" >Tweet</a>
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+    <div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2011/05/26/silverlight-3d-part-one/" title="Previous Post: Silverlight 3D: Part One">&laquo; Silverlight 3D: Part One</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2011/08/11/getting-started-with-f-number/" title="Next Post: Getting started with F#">Getting started with F# &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    
+<section>
+  <h1>About Me</h1>
+  <p>David M. Johnson is a life-long learner, developer, traveler, almost paleo, amateur theologian and chicagoan.</p>
+    </section>
+<section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2012/08/17/first-post-on-new-blog/">First post on new blog</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/05/12/roll-your-own-twitter-feed-with-backbone-dot-js/">Roll your own Twitter Feed with Backbone.js</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2011/08/31/testing-html5-web-apps-with-watir/">Testing HTML5 Web Apps with WATIR</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2011/08/11/getting-started-with-f-number/">Getting started with F#</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2011/06/11/silverlight-3d-part-two/">Silverlight 3D: Part Two</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/djohnsonm">@djohnsonm</a> on GitHub
+  
+  <script type="text/javascript">
+    $.domReady(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'djohnsonm',
+            count: 4,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+<section>
+  <h1>Latest Tweets</h1>
+  <ul id="tweets">
+    <li class="loading">Status updating...</li>
+  </ul>
+  <script type="text/javascript">
+    $.domReady(function(){
+      getTwitterFeed("djohnsonm", 4, false);
+    });
+  </script>
+  <script src="/javascripts/twitter.js" type="text/javascript"> </script>
+  
+    <a href="http://twitter.com/djohnsonm" class="twitter-follow-button" data-show-count="false">Follow @djohnsonm</a>
+  
+</section>
+
+
+
+<section class="googleplus">
+  <h1>
+    <a href="https://plus.google.com/115046248563331704822?rel=author">
+      <img src="http://www.google.com/images/icons/ui/gprofile_button-32.png" width="32" height="32">
+	Google+    
+</a>
+</h1>
+</section>
+
+
+
+<section>
+<h1>Stack Overflow</h1>
+<a href="http://stackoverflow.com/users/453261/dave"><img src="http://stackoverflow.com/users/flair/453261.png" width="208" height="58" alt="profile for dave at Stack Overflow, Q&amp;A for professional and enthusiast programmers" title="profile for dave at Stack Overflow, Q&amp;A for professional and enthusiast programmers"></a>
+</section>
+
+
+<section>
+  <h1>Coderwall</h1>
+  <ul id="cw_badges">
+    <li class="loading">Status updating...</li>
+  </ul>
+
+  <script type="text/javascript">
+    var coderwall = (function(){
+      function render(options, badges){
+        var fragment = '',
+            t = $(options.target)[0],
+            height = 65,
+            width = 65,
+            index;
+
+        for (index in badges) {
+          fragment += '<a class="cw_badge"title="' + badges[index].description + '" href="http://coderwall.com/' + options.user + '">';
+          fragment +=   '<img alt="' + badges[index].description + '" height="' + width + '" width="' + height + '" src="' + badges[index].badge + '"/>';
+          fragment += '</a>';
+        }
+
+        t.innerHTML = fragment;
+      }
+      return {
+        showBadges: function(options){
+          $.ajax({
+              url: 'http://coderwall.com/' + options.user + '.json?callback=?'
+            , type: 'jsonp'
+            , error: function (err) { $(options.target + ' li.loading').addClass('error').text("Error loading feed"); }
+            , success: function(res) {
+                render(options, res.data.badges);
+            }
+          });
+        }
+      };
+    })();
+
+    $.domReady(function(){
+      if (!window.jXHR){
+        var jxhr = document.createElement('script');
+        jxhr.type = 'text/javascript';
+        jxhr.src = '/javascripts/libs/jXHR.js';
+        var s = document.getElementsByTagName('script')[0];
+        s.parentNode.insertBefore(jxhr, s);
+      }
+      if (!window.$){
+        var b = document.createElement('script');
+        b.type = 'text/javascript';
+        b.src = '/javascripts/ender.js';
+        var sc = document.getElementsByTagName('script')[0];
+        sc.parentNode.insertBefore(jxhr, s);
+      }
+      coderwall.showBadges({
+        user: 'djohnsonm',
+        target: '#cw_badges'
+      });
+    });
+  </script>
+  <style type="text/css">
+    .cw_badge img {
+      padding: 5px;
+      border: 0 none !important;
+      -moz-box-shadow: none !important;
+      -webkit-box-shadow: none !important;
+      -o-box-shadow: none !important;
+      box-shadow: none !important;
+    }
+  </style>
+</section>
+
+<section>
+  <h1>Tag Cloud</h1>
+      <span id="tag-cloud"><a href='/blog/categories/-net' style='font-size: 130.0%'>.NET</a> <a href='/blog/categories/3d' style='font-size: 160.0%'>3D</a> <a href='/blog/categories/blogging' style='font-size: 130.0%'>blogging</a> <a href='/blog/categories/code' style='font-size: 130.0%'>code</a> <a href='/blog/categories/css3' style='font-size: 130.0%'>css3</a> <a href='/blog/categories/f-' style='font-size: 130.0%'>f#</a> <a href='/blog/categories/functional-programming' style='font-size: 130.0%'>functional-programming</a> <a href='/blog/categories/html5' style='font-size: 160.0%'>html5</a> <a href='/blog/categories/jquery' style='font-size: 130.0%'>jQuery</a> <a href='/blog/categories/migrated' style='font-size: 130.0%'>migrated</a> <a href='/blog/categories/node-js' style='font-size: 130.0%'>node.js</a> <a href='/blog/categories/ruby' style='font-size: 130.0%'>ruby</a> <a href='/blog/categories/silverlight' style='font-size: 160.0%'>silverlight</a> <a href='/blog/categories/subtle-patterns' style='font-size: 130.0%'>subtle-patterns</a> <a href='/blog/categories/testing' style='font-size: 130.0%'>testing</a> <a href='/blog/categories/twitter-bootstrap' style='font-size: 130.0%'>twitter-bootstrap</a> <a href='/blog/categories/watir' style='font-size: 130.0%'>WATIR</a> <a href='/blog/categories/xna' style='font-size: 160.0%'>XNA</a> </span>
+      </section>
+
+<section>
+  <h1>Categories</h1>
+      <ul id="category-list"><li><a href='/blog/categories/-net'>.NET (1)</a></li><li><a href='/blog/categories/3d'>3D (2)</a></li><li><a href='/blog/categories/blogging'>blogging (1)</a></li><li><a href='/blog/categories/code'>code (1)</a></li><li><a href='/blog/categories/css3'>css3 (1)</a></li><li><a href='/blog/categories/f-'>f# (1)</a></li><li><a href='/blog/categories/functional-programming'>functional-programming (1)</a></li><li><a href='/blog/categories/html5'>html5 (2)</a></li><li><a href='/blog/categories/jquery'>jQuery (1)</a></li><li><a href='/blog/categories/migrated'>migrated (1)</a></li><li><a href='/blog/categories/node-js'>node.js (1)</a></li><li><a href='/blog/categories/ruby'>ruby (1)</a></li><li><a href='/blog/categories/silverlight'>silverlight (2)</a></li><li><a href='/blog/categories/subtle-patterns'>subtle-patterns (1)</a></li><li><a href='/blog/categories/testing'>testing (1)</a></li><li><a href='/blog/categories/twitter-bootstrap'>twitter-bootstrap (1)</a></li><li><a href='/blog/categories/watir'>WATIR (1)</a></li><li><a href='/blog/categories/xna'>XNA (2)</a></li></ul>
+      </section>
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2012 - david m. johnson -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'djohnsonm';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://davidmjohnson.me/blog/2011/06/11/silverlight-3d-part-two/';
+        var disqus_url = 'http://davidmjohnson.me/blog/2011/06/11/silverlight-3d-part-two/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+      script.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+    })();
+  </script>
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

@@ -4,7 +4,7 @@
   <title><![CDATA[Category: silverlight | david m. johnson]]></title>
   <link href="http://davidmjohnson.me/blog/categories/silverlight/atom.xml" rel="self"/>
   <link href="http://davidmjohnson.me/"/>
-  <updated>2012-08-24T02:24:05-05:00</updated>
+  <updated>2012-08-24T02:57:01-05:00</updated>
   <id>http://davidmjohnson.me/</id>
   <author>
     <name><![CDATA[david m. johnson]]></name>
@@ -12,6 +12,417 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Silverlight 3D: Part Two]]></title>
+    <link href="http://davidmjohnson.me/blog/2011/06/11/silverlight-3d-part-two/"/>
+    <updated>2011-06-11T02:47:00-05:00</updated>
+    <id>http://davidmjohnson.me/blog/2011/06/11/silverlight-3d-part-two</id>
+    <content type="html"><![CDATA[<p><img src="https://dl.dropbox.com/u/10021156/blog/Ball2.png"></p>
+
+<h2>Why should you care?</h2>
+
+<p>3D Photorealism is nothing new. Plenty of companies have been substituting photos of their product line for creating photo-realistic 3D renditions instead (big cost savings — Apple is a great example of this). The only issue is that these products are typically displayed in 2D on a company website. This means real-time 3D manipulation is not possible outside of a QuickTime plug-in (which usually displays 2D images) or a 2D flipbook of 3D images where all positions are predefined. Enter Silverlight 5 and Babylon Toolkit. Instead of rendering out content as 2D images, the 3D file format (.obj in our case) can be maintained and manipulated during the web app’s runtime thanks to the new 3D features of Silverlight 5 and the extensibility of the Babylon Toolkit.</p>
+
+<h2>Importing 3D Models into your Silverlight 5 project</h2>
+
+<p>In our previous post we went through a high-level overview of how to manually implement 3D graphics in Silverlight 5 as well as a discussion about how to program against the GPU. We concluded that there are three ways to implement 3D effects in Silverlight 5.</p>
+
+<p>1 – Plot all your vertices individually (by hand).
+2 – Plot your vertices algorithmically.
+3 – Import a 3D model into your Silverlight application via a third-party API.</p>
+
+<p>For this next example we will use a 3D modeling app named “Modo” to create a soccer ball model. This model will then be used as 3D content in our Silverlight App.</p>
+
+<h2>3D Apps</h2>
+
+<p>Back in the day I used to Modo quite a bit (Here is the only thing I ever made that was worth looking at). For those of you who don’t know Modo, it’s a next-gen 3D modeling, painting, animating and rendering package that is used by many professionals in the 3D industry including Pixar. (Note: Any 3D application that is capable of producing the .OBJ file format will suffice for our purposes:</p>
+
+<ul>
+<li>3D Studio Max</li>
+<li>Blender</li>
+<li>Maya</li>
+<li>Sketchup
+all seem to be just as capable). If you want to go ahead and create the Soccer Ball using Modo or another 3D program click here for a walkthrough or you can download the whole project here instead.</li>
+</ul>
+
+
+<p>Final Result
+<img src="https://dl.dropbox.com/u/10021156/blog/Modo-1024x626.jpg"></p>
+
+<h2>Babylon</h2>
+
+<p>After you have created the model, you will need to download the Babylon Importer Toolkit (big thanks to David Catuhe). The Babylon Toolkit gives us access to XNA-like functionality that would only be accessible in the full version of the XNA game studio. This means we don’t have to go about the process of plotting our vertices individually or even worrying about pixel shaders because Catuhe’s Babylon Toolkit provides abstractions on top of these granular aspects of Silverlight 3D.</p>
+
+<h2>Putting it all together</h2>
+
+<p>After you download the toolkit, create a new project and add the assemblies found inside the toolkit to your Silverlight application. Next, import your .OBJ, .MTL (material) files and .JPG (texture files – if necessary) into your silverlight project and set their build action to “resource.”</p>
+
+<p><img src="https://dl.dropbox.com/u/10021156/blog/Build-Action-Resource.png"></p>
+
+<p>Now you should be able to grab these items as streams and use the Babylon API to call the Import function asynchronously. For a fuller demonstration of this process check out the Babylon sample project of a 3D Viper from Battlestar Galactica and see the code below.</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>XAML Side </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='xml'><span class='line'><span class="nt">&lt;Grid</span> <span class="na">x:Name=</span><span class="s">&quot;LayoutRoot&quot;</span> <span class="na">Background=</span><span class="s">&quot;Gray&quot;</span> <span class="na">MouseMove=</span><span class="s">&quot;drawingSurface_MouseMove&quot;</span> <span class="na">MouseLeftButtonDown=</span><span class="s">&quot;LayoutRoot_MouseLeftButtonDown&quot;</span> <span class="na">MouseLeftButtonUp=</span><span class="s">&quot;LayoutRoot_MouseLeftButtonUp&quot;</span> <span class="na">MouseEnter=</span><span class="s">&quot;LayoutRoot_MouseEnter&quot;</span> <span class="na">MouseWheel=</span><span class="s">&quot;LayoutRoot_MouseWheel&quot;</span><span class="nt">&gt;&lt;/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;pre&gt;&lt;code&gt;</span>    <span class="ni">&amp;lt;</span>DrawingSurface  Name=&quot;drawingSurface&quot; Draw=&quot;DrawingSurface_Draw&quot; SizeChanged=&quot;drawingSurface_SizeChanged&quot;/<span class="ni">&amp;gt;</span>
+</span><span class='line'>    <span class="ni">&amp;lt;</span>StackPanel Name=&quot;waitBar&quot; VerticalAlignment=&quot;Center&quot; Visibility=&quot;Collapsed&quot;<span class="ni">&amp;gt;</span>
+</span><span class='line'>        <span class="ni">&amp;lt;</span>TextBlock Text=&quot;Loading...Please wait&quot; HorizontalAlignment=&quot;Center&quot;/<span class="ni">&amp;gt;</span>
+</span><span class='line'>        <span class="ni">&amp;lt;</span>ProgressBar Height=&quot;10&quot; Minimum=&quot;0&quot; Maximum=&quot;100&quot; Margin=&quot;20, 10&quot; Name=&quot;waitProgressBar&quot;/<span class="ni">&amp;gt;</span>
+</span><span class='line'>    <span class="ni">&amp;lt;</span>/StackPanel<span class="ni">&amp;gt;</span>
+</span><span class='line'><span class="ni">&amp;lt;</span>/Grid<span class="ni">&amp;gt;</span>
+</span><span class='line'><span class="nt">&lt;/code&gt;&lt;/pre&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;p&gt;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>C# Side </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+<span class='line-number'>60</span>
+<span class='line-number'>61</span>
+<span class='line-number'>62</span>
+<span class='line-number'>63</span>
+<span class='line-number'>64</span>
+<span class='line-number'>65</span>
+<span class='line-number'>66</span>
+<span class='line-number'>67</span>
+<span class='line-number'>68</span>
+<span class='line-number'>69</span>
+<span class='line-number'>70</span>
+<span class='line-number'>71</span>
+<span class='line-number'>72</span>
+<span class='line-number'>73</span>
+<span class='line-number'>74</span>
+<span class='line-number'>75</span>
+<span class='line-number'>76</span>
+<span class='line-number'>77</span>
+<span class='line-number'>78</span>
+<span class='line-number'>79</span>
+<span class='line-number'>80</span>
+<span class='line-number'>81</span>
+<span class='line-number'>82</span>
+<span class='line-number'>83</span>
+<span class='line-number'>84</span>
+<span class='line-number'>85</span>
+<span class='line-number'>86</span>
+<span class='line-number'>87</span>
+<span class='line-number'>88</span>
+<span class='line-number'>89</span>
+<span class='line-number'>90</span>
+<span class='line-number'>91</span>
+<span class='line-number'>92</span>
+<span class='line-number'>93</span>
+<span class='line-number'>94</span>
+<span class='line-number'>95</span>
+<span class='line-number'>96</span>
+<span class='line-number'>97</span>
+<span class='line-number'>98</span>
+<span class='line-number'>99</span>
+<span class='line-number'>100</span>
+<span class='line-number'>101</span>
+<span class='line-number'>102</span>
+<span class='line-number'>103</span>
+<span class='line-number'>104</span>
+<span class='line-number'>105</span>
+<span class='line-number'>106</span>
+<span class='line-number'>107</span>
+<span class='line-number'>108</span>
+<span class='line-number'>109</span>
+<span class='line-number'>110</span>
+<span class='line-number'>111</span>
+<span class='line-number'>112</span>
+<span class='line-number'>113</span>
+<span class='line-number'>114</span>
+<span class='line-number'>115</span>
+<span class='line-number'>116</span>
+<span class='line-number'>117</span>
+<span class='line-number'>118</span>
+<span class='line-number'>119</span>
+<span class='line-number'>120</span>
+<span class='line-number'>121</span>
+<span class='line-number'>122</span>
+<span class='line-number'>123</span>
+<span class='line-number'>124</span>
+<span class='line-number'>125</span>
+<span class='line-number'>126</span>
+<span class='line-number'>127</span>
+<span class='line-number'>128</span>
+<span class='line-number'>129</span>
+<span class='line-number'>130</span>
+<span class='line-number'>131</span>
+<span class='line-number'>132</span>
+<span class='line-number'>133</span>
+<span class='line-number'>134</span>
+<span class='line-number'>135</span>
+<span class='line-number'>136</span>
+<span class='line-number'>137</span>
+<span class='line-number'>138</span>
+<span class='line-number'>139</span>
+<span class='line-number'>140</span>
+<span class='line-number'>141</span>
+<span class='line-number'>142</span>
+<span class='line-number'>143</span>
+<span class='line-number'>144</span>
+<span class='line-number'>145</span>
+<span class='line-number'>146</span>
+<span class='line-number'>147</span>
+<span class='line-number'>148</span>
+<span class='line-number'>149</span>
+<span class='line-number'>150</span>
+<span class='line-number'>151</span>
+<span class='line-number'>152</span>
+<span class='line-number'>153</span>
+<span class='line-number'>154</span>
+<span class='line-number'>155</span>
+<span class='line-number'>156</span>
+<span class='line-number'>157</span>
+<span class='line-number'>158</span>
+<span class='line-number'>159</span>
+<span class='line-number'>160</span>
+<span class='line-number'>161</span>
+<span class='line-number'>162</span>
+<span class='line-number'>163</span>
+<span class='line-number'>164</span>
+</pre></td><td class='code'><pre><code class='csharp'><span class='line'><span class="k">namespace</span> <span class="nn">Footballs</span>
+</span><span class='line'><span class="p">{&lt;/</span><span class="n">p</span><span class="p">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">&lt;</span><span class="n">pre</span><span class="p">&gt;&lt;</span><span class="n">code</span><span class="p">&gt;</span><span class="k">public</span> <span class="k">partial</span> <span class="k">class</span> <span class="nc">MainPage</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="n">Model</span> <span class="n">model</span><span class="p">;</span>
+</span><span class='line'>    <span class="kt">bool</span> <span class="n">mouseLeftDown</span><span class="p">;</span>
+</span><span class='line'>    <span class="n">Point</span> <span class="n">startPosition</span><span class="p">;</span>
+</span><span class='line'>    <span class="k">readonly</span> <span class="n">OrbitCamera</span> <span class="n">camera</span> <span class="p">=</span> <span class="k">new</span> <span class="n">OrbitCamera</span> <span class="p">{</span> <span class="n">Radius</span> <span class="p">=</span> <span class="m">20</span> <span class="p">};</span>
+</span><span class='line'>    <span class="n">StatesManager</span> <span class="n">statesManager</span><span class="p">;</span>
+</span><span class='line'>    <span class="n">GraphicsDevice</span> <span class="n">device</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">public</span> <span class="nf">MainPage</span><span class="p">()</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="n">InitializeComponent</span><span class="p">();</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">private</span> <span class="k">void</span> <span class="nf">DrawingSurface_Draw</span><span class="p">(</span><span class="kt">object</span> <span class="n">sender</span><span class="p">,</span> <span class="n">DrawEventArgs</span> <span class="n">e</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="n">device</span> <span class="p">=</span> <span class="n">e</span><span class="p">.</span><span class="n">GraphicsDevice</span><span class="p">;</span>
+</span><span class='line'>        <span class="k">if</span> <span class="p">(</span><span class="n">model</span> <span class="p">==</span> <span class="k">null</span><span class="p">)</span>
+</span><span class='line'>        <span class="p">{</span>  <span class="c1">//This will spawn a new thread to grab and initialize our model</span>
+</span><span class='line'>            <span class="n">Dispatcher</span><span class="p">.</span><span class="n">BeginInvoke</span><span class="p">(()</span> <span class="p">=&amp;</span><span class="n">gt</span><span class="p">;</span> <span class="n">InitModel</span><span class="p">(</span><span class="n">e</span><span class="p">.</span><span class="n">GraphicsDevice</span><span class="p">));</span>
+</span><span class='line'>            <span class="n">statesManager</span> <span class="p">=</span> <span class="k">new</span> <span class="n">StatesManager</span><span class="p">(</span><span class="n">e</span><span class="p">.</span><span class="n">GraphicsDevice</span><span class="p">);</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="k">if</span> <span class="p">(</span><span class="n">model</span> <span class="p">==</span> <span class="k">null</span><span class="p">)</span>
+</span><span class='line'>            <span class="k">return</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">DateTime</span> <span class="n">start</span> <span class="p">=</span> <span class="n">DateTime</span><span class="p">.</span><span class="n">Now</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="c1">// States</span>
+</span><span class='line'>        <span class="n">statesManager</span><span class="p">.</span><span class="n">DepthBufferEnable</span> <span class="p">=</span> <span class="k">true</span><span class="p">;</span>
+</span><span class='line'>        <span class="n">statesManager</span><span class="p">.</span><span class="n">CullMode</span> <span class="p">=</span> <span class="n">CullMode</span><span class="p">.</span><span class="n">None</span><span class="p">;</span>
+</span><span class='line'>        <span class="n">statesManager</span><span class="p">.</span><span class="n">ApplyDepthStencilState</span><span class="p">();</span>
+</span><span class='line'>        <span class="n">statesManager</span><span class="p">.</span><span class="n">ApplyRasterizerState</span><span class="p">();</span>
+</span><span class='line'>        <span class="n">e</span><span class="p">.</span><span class="n">GraphicsDevice</span><span class="p">.</span><span class="n">BlendState</span> <span class="p">=</span> <span class="n">BlendState</span><span class="p">.</span><span class="n">AlphaBlend</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="c1">// Draw</span>
+</span><span class='line'> <span class="n">e</span><span class="p">.</span><span class="n">GraphicsDevice</span><span class="p">.</span><span class="n">Clear</span><span class="p">(</span><span class="n">ClearOptions</span><span class="p">.</span><span class="n">Target</span> <span class="p">|</span> <span class="n">ClearOptions</span><span class="p">.</span><span class="n">DepthBuffer</span><span class="p">,</span> <span class="k">new</span> <span class="n">Color</span><span class="p">(</span><span class="m">0</span><span class="p">,</span> <span class="m">0</span><span class="p">,</span> <span class="m">0</span><span class="p">,</span> <span class="m">0</span><span class="p">),</span> <span class="m">1.0f</span><span class="p">,</span> <span class="m">0</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>      <span class="c1">//We use BasicEffect instead of manually using pixel/vertex shader</span>
+</span><span class='line'>        <span class="k">foreach</span> <span class="p">(</span><span class="n">ModelMesh</span> <span class="n">mesh</span> <span class="k">in</span> <span class="n">model</span><span class="p">.</span><span class="n">Meshes</span><span class="p">)</span>
+</span><span class='line'>        <span class="p">{</span>
+</span><span class='line'>            <span class="k">foreach</span> <span class="p">(</span><span class="n">BasicEffect</span> <span class="n">basicEffect</span> <span class="k">in</span> <span class="n">mesh</span><span class="p">.</span><span class="n">Effects</span><span class="p">)</span>
+</span><span class='line'>            <span class="p">{</span>
+</span><span class='line'>                <span class="n">basicEffect</span><span class="p">.</span><span class="n">SceneAmbientColor</span> <span class="p">=</span> <span class="k">new</span> <span class="n">Color</span><span class="p">(</span><span class="m">0.3f</span><span class="p">,</span> <span class="m">0.3f</span><span class="p">,</span> <span class="m">0.3f</span><span class="p">,</span> <span class="m">0</span><span class="p">);</span>
+</span><span class='line'>                <span class="n">basicEffect</span><span class="p">.</span><span class="n">World</span> <span class="p">=</span> <span class="n">Matrix</span><span class="p">.</span><span class="n">Identity</span><span class="p">;</span>
+</span><span class='line'>                <span class="n">basicEffect</span><span class="p">.</span><span class="n">View</span> <span class="p">=</span> <span class="n">camera</span><span class="p">.</span><span class="n">View</span><span class="p">;</span>
+</span><span class='line'>                <span class="n">basicEffect</span><span class="p">.</span><span class="n">Projection</span> <span class="p">=</span> <span class="n">camera</span><span class="p">.</span><span class="n">Projection</span><span class="p">;</span>
+</span><span class='line'>                <span class="n">basicEffect</span><span class="p">.</span><span class="n">LightPosition</span> <span class="p">=</span> <span class="n">camera</span><span class="p">.</span><span class="n">Position</span> <span class="p">+</span> <span class="k">new</span> <span class="n">Vector3</span><span class="p">(</span><span class="m">1</span><span class="p">,</span> <span class="m">5</span><span class="p">,</span> <span class="m">3</span><span class="p">);</span>
+</span><span class='line'>                <span class="n">basicEffect</span><span class="p">.</span><span class="n">CameraPosition</span> <span class="p">=</span> <span class="n">camera</span><span class="p">.</span><span class="n">Position</span><span class="p">;</span>
+</span><span class='line'>            <span class="p">}</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>        <span class="n">model</span><span class="p">.</span><span class="n">Draw</span><span class="p">();</span>
+</span><span class='line'>        <span class="n">camera</span><span class="p">.</span><span class="n">ApplyInertia</span><span class="p">();</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="kt">double</span> <span class="n">duration</span> <span class="p">=</span> <span class="p">(</span><span class="kt">double</span><span class="p">)</span><span class="n">DateTime</span><span class="p">.</span><span class="n">Now</span><span class="p">.</span><span class="n">Subtract</span><span class="p">(</span><span class="n">start</span><span class="p">).</span><span class="n">Ticks</span> <span class="p">/</span> <span class="n">TimeSpan</span><span class="p">.</span><span class="n">TicksPerMillisecond</span><span class="p">;</span>
+</span><span class='line'>        <span class="kt">int</span> <span class="n">verticesCount</span> <span class="p">=</span> <span class="n">model</span><span class="p">.</span><span class="n">Meshes</span><span class="p">.</span><span class="n">Sum</span><span class="p">(</span><span class="n">v</span> <span class="p">=&amp;</span><span class="n">gt</span><span class="p">;</span> <span class="n">v</span><span class="p">.</span><span class="n">VerticesCount</span><span class="p">);</span>
+</span><span class='line'>        <span class="n">e</span><span class="p">.</span><span class="n">InvalidateSurface</span><span class="p">();</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">private</span> <span class="k">void</span> <span class="nf">InitModel</span><span class="p">(</span><span class="n">GraphicsDevice</span> <span class="n">device</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'><span class="p">&lt;/</span><span class="n">code</span><span class="p">&gt;&lt;/</span><span class="n">pre</span><span class="p">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">&lt;</span><span class="n">p</span><span class="p">&gt;</span><span class="n">Stream</span> <span class="n">objStream</span> <span class="p">=</span> <span class="n">Application</span><span class="p">.</span><span class="n">GetResourceStream</span><span class="p">(</span><span class="k">new</span> <span class="n">Uri</span><span class="p">(</span><span class="s">&quot;/Footballs;component/Models/Brazile.obj&quot;</span><span class="p">,</span> <span class="n">UriKind</span><span class="p">.</span><span class="n">Relative</span><span class="p">)).</span><span class="n">Stream</span><span class="p">;&lt;/</span><span class="n">p</span><span class="p">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">&lt;</span><span class="n">pre</span><span class="p">&gt;&lt;</span><span class="n">code</span><span class="p">&gt;</span>        <span class="n">ObjImporter</span> <span class="n">importer</span> <span class="p">=</span> <span class="k">new</span> <span class="n">ObjImporter</span><span class="p">();</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">importer</span><span class="p">.</span><span class="n">OnImportCompleted</span> <span class="p">+=</span> <span class="n">m</span> <span class="p">=&amp;</span><span class="n">gt</span><span class="p">;</span>
+</span><span class='line'>        <span class="p">{</span>
+</span><span class='line'>            <span class="n">waitBar</span><span class="p">.</span><span class="n">Visibility</span> <span class="p">=</span> <span class="n">Visibility</span><span class="p">.</span><span class="n">Collapsed</span><span class="p">;</span>
+</span><span class='line'>            <span class="n">model</span> <span class="p">=</span> <span class="n">m</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>            <span class="n">drawingSurface</span><span class="p">.</span><span class="n">Invalidate</span><span class="p">();</span>
+</span><span class='line'>        <span class="p">};</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="c1">// Report loading progress</span>
+</span><span class='line'>        <span class="n">importer</span><span class="p">.</span><span class="n">OnImportProgressChanged</span> <span class="p">+=</span> <span class="n">p</span> <span class="p">=&amp;</span><span class="n">gt</span><span class="p">;</span>
+</span><span class='line'>        <span class="p">{</span>
+</span><span class='line'>            <span class="n">waitProgressBar</span><span class="p">.</span><span class="n">Value</span> <span class="p">=</span> <span class="n">p</span><span class="p">;</span>
+</span><span class='line'>        <span class="p">};</span>
+</span><span class='line'>        <span class="n">waitBar</span><span class="p">.</span><span class="n">Visibility</span> <span class="p">=</span> <span class="n">Visibility</span><span class="p">.</span><span class="n">Visible</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="c1">//THIS IS WHERE ALL THE MAGIC HAPPENS</span>
+</span><span class='line'><span class="p">&lt;/</span><span class="n">code</span><span class="p">&gt;&lt;/</span><span class="n">pre</span><span class="p">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">&lt;</span><span class="n">p</span><span class="p">&gt;</span> <span class="n">importer</span><span class="p">.</span><span class="n">ImportAsync</span><span class="p">(</span><span class="n">objStream</span><span class="p">,</span> <span class="n">GetResourceStream</span><span class="p">,</span> <span class="n">device</span><span class="p">,</span> <span class="n">ImportationOptions</span><span class="p">.</span><span class="n">Optimize</span><span class="p">);&lt;/</span><span class="n">p</span><span class="p">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">&lt;</span><span class="n">pre</span><span class="p">&gt;&lt;</span><span class="n">code</span><span class="p">&gt;</span>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">Stream</span> <span class="nf">GetResourceStream</span><span class="p">(</span><span class="kt">string</span> <span class="n">name</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="k">try</span>
+</span><span class='line'>        <span class="p">{</span>
+</span><span class='line'>            <span class="k">return</span> <span class="n">Application</span><span class="p">.</span><span class="n">GetResourceStream</span><span class="p">(</span><span class="k">new</span> <span class="n">Uri</span><span class="p">(</span><span class="kt">string</span><span class="p">.</span><span class="n">Format</span><span class="p">(</span><span class="s">&quot;/Footballs;component/Models/{0}&quot;</span><span class="p">,</span> <span class="n">name</span><span class="p">),</span> <span class="n">UriKind</span><span class="p">.</span><span class="n">Relative</span><span class="p">)).</span><span class="n">Stream</span><span class="p">;</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>        <span class="k">catch</span>
+</span><span class='line'>        <span class="p">{</span>
+</span><span class='line'>            <span class="n">Dispatcher</span><span class="p">.</span><span class="n">BeginInvoke</span><span class="p">(()</span> <span class="p">=&amp;</span><span class="n">gt</span><span class="p">;</span> <span class="n">MessageBox</span><span class="p">.</span><span class="n">Show</span><span class="p">(</span><span class="s">&quot;Unable to find &quot;</span> <span class="p">+</span> <span class="n">name</span><span class="p">,</span> <span class="s">&quot;Error&quot;</span><span class="p">,</span> <span class="n">MessageBoxButton</span><span class="p">.</span><span class="n">OK</span><span class="p">));</span>
+</span><span class='line'>            <span class="k">return</span> <span class="k">null</span><span class="p">;</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'><span class="p">&lt;/</span><span class="n">code</span><span class="p">&gt;&lt;/</span><span class="n">pre</span><span class="p">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">&lt;</span><span class="n">p</span><span class="p">&gt;</span><span class="c1">//This is the resizing section&lt;/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">&lt;</span><span class="n">pre</span><span class="p">&gt;&lt;</span><span class="n">code</span><span class="p">&gt;</span>    <span class="cp">#region Aspect ratio</span>
+</span><span class='line'>    <span class="k">private</span> <span class="k">void</span> <span class="nf">drawingSurface_SizeChanged</span><span class="p">(</span><span class="kt">object</span> <span class="n">sender</span><span class="p">,</span> <span class="n">SizeChangedEventArgs</span> <span class="n">e</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="n">ComputeAspectRatio</span><span class="p">();</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">void</span> <span class="nf">ComputeAspectRatio</span><span class="p">()</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="n">camera</span><span class="p">.</span><span class="n">AspectRatio</span> <span class="p">=</span> <span class="p">(</span><span class="kt">float</span><span class="p">)(</span><span class="n">drawingSurface</span><span class="p">.</span><span class="n">ActualWidth</span> <span class="p">/</span> <span class="n">drawingSurface</span><span class="p">.</span><span class="n">ActualHeight</span><span class="p">);</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">private</span> <span class="k">void</span> <span class="nf">UserControl_Loaded</span><span class="p">(</span><span class="kt">object</span> <span class="n">sender</span><span class="p">,</span> <span class="n">RoutedEventArgs</span> <span class="n">e</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="n">ComputeAspectRatio</span><span class="p">();</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>    <span class="cp">#endregion</span>
+</span><span class='line'><span class="p">&lt;/</span><span class="n">code</span><span class="p">&gt;&lt;/</span><span class="n">pre</span><span class="p">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">&lt;</span><span class="n">p</span><span class="p">&gt;</span><span class="c1">//This is the mouse section&lt;/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">&lt;</span><span class="n">pre</span><span class="p">&gt;&lt;</span><span class="n">code</span><span class="p">&gt;</span>    <span class="cp">#region Mouse</span>
+</span><span class='line'>    <span class="k">private</span> <span class="k">void</span> <span class="nf">drawingSurface_MouseMove</span><span class="p">(</span><span class="kt">object</span> <span class="n">sender</span><span class="p">,</span> <span class="n">System</span><span class="p">.</span><span class="n">Windows</span><span class="p">.</span><span class="n">Input</span><span class="p">.</span><span class="n">MouseEventArgs</span> <span class="n">e</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="k">if</span> <span class="p">(!</span><span class="n">mouseLeftDown</span><span class="p">)</span>
+</span><span class='line'>            <span class="k">return</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">Point</span> <span class="n">currentPosition</span> <span class="p">=</span> <span class="n">e</span><span class="p">.</span><span class="n">GetPosition</span><span class="p">(</span><span class="n">drawingSurface</span><span class="p">);</span>
+</span><span class='line'>        <span class="n">camera</span><span class="p">.</span><span class="n">InertialAlpha</span> <span class="p">+=</span> <span class="p">(</span><span class="kt">float</span><span class="p">)(</span><span class="n">currentPosition</span><span class="p">.</span><span class="n">X</span> <span class="p">-</span> <span class="n">startPosition</span><span class="p">.</span><span class="n">X</span><span class="p">)</span> <span class="p">*</span> <span class="n">camera</span><span class="p">.</span><span class="n">AngularSpeed</span><span class="p">;</span>
+</span><span class='line'>        <span class="n">camera</span><span class="p">.</span><span class="n">InertialBeta</span> <span class="p">-=</span> <span class="p">(</span><span class="kt">float</span><span class="p">)(</span><span class="n">currentPosition</span><span class="p">.</span><span class="n">Y</span> <span class="p">-</span> <span class="n">startPosition</span><span class="p">.</span><span class="n">Y</span><span class="p">)</span> <span class="p">*</span> <span class="n">camera</span><span class="p">.</span><span class="n">AngularSpeed</span><span class="p">;</span>
+</span><span class='line'>        <span class="n">startPosition</span> <span class="p">=</span> <span class="n">currentPosition</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">private</span> <span class="k">void</span> <span class="nf">LayoutRoot_MouseLeftButtonDown</span><span class="p">(</span><span class="kt">object</span> <span class="n">sender</span><span class="p">,</span> <span class="n">System</span><span class="p">.</span><span class="n">Windows</span><span class="p">.</span><span class="n">Input</span><span class="p">.</span><span class="n">MouseButtonEventArgs</span> <span class="n">e</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="n">mouseLeftDown</span> <span class="p">=</span> <span class="k">true</span><span class="p">;</span>
+</span><span class='line'>        <span class="n">startPosition</span> <span class="p">=</span> <span class="n">e</span><span class="p">.</span><span class="n">GetPosition</span><span class="p">(</span><span class="n">drawingSurface</span><span class="p">);</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">private</span> <span class="k">void</span> <span class="nf">LayoutRoot_MouseLeftButtonUp</span><span class="p">(</span><span class="kt">object</span> <span class="n">sender</span><span class="p">,</span> <span class="n">System</span><span class="p">.</span><span class="n">Windows</span><span class="p">.</span><span class="n">Input</span><span class="p">.</span><span class="n">MouseButtonEventArgs</span> <span class="n">e</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="n">mouseLeftDown</span> <span class="p">=</span> <span class="k">false</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">private</span> <span class="k">void</span> <span class="nf">LayoutRoot_MouseEnter</span><span class="p">(</span><span class="kt">object</span> <span class="n">sender</span><span class="p">,</span> <span class="n">System</span><span class="p">.</span><span class="n">Windows</span><span class="p">.</span><span class="n">Input</span><span class="p">.</span><span class="n">MouseEventArgs</span> <span class="n">e</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="n">mouseLeftDown</span> <span class="p">=</span> <span class="k">false</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">private</span> <span class="k">void</span> <span class="nf">LayoutRoot_MouseWheel</span><span class="p">(</span><span class="kt">object</span> <span class="n">sender</span><span class="p">,</span> <span class="n">System</span><span class="p">.</span><span class="n">Windows</span><span class="p">.</span><span class="n">Input</span><span class="p">.</span><span class="n">MouseWheelEventArgs</span> <span class="n">e</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="n">camera</span><span class="p">.</span><span class="n">Radius</span> <span class="p">-=</span> <span class="n">e</span><span class="p">.</span><span class="n">Delta</span> <span class="p">*</span> <span class="n">camera</span><span class="p">.</span><span class="n">Radius</span> <span class="p">/</span> <span class="m">1000.0f</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>    <span class="cp">#endregion</span>
+</span><span class='line'><span class="p">&lt;/</span><span class="n">code</span><span class="p">&gt;&lt;/</span><span class="n">pre</span><span class="p">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">&lt;</span><span class="n">p</span><span class="p">&gt;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<h2>Conclusion</h2>
+
+<p>In this tutorial we had a brief overview of how 3D content is traditionally served on the web. We then discussed how Silverlight 5 combined with the Babylon toolkit expedites the process of dynamic content delivery while proceeding to create our own 3D model and host it in a new Silverlight 5 App. Hope this series was helpful. Questions/Comments/Concerns/Cries of Outrage? Feel free to comment.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Silverlight 3D: Part One]]></title>
