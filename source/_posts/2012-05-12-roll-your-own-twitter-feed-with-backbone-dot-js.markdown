@@ -10,9 +10,8 @@ categories: [twitter-bootstrap, html5, jQuery, node.js, subtle-patterns, css3]
 
 Backbone.js is a JavaScript framework that manages complexity on the client while enabling the creation of rich HTML5 applications in a MVC-style fashion. For the more tech-savvy:
 
-{%blockquote%}
-Backbone.js gives structure to web applications by providing models with key-value binding and custom events, collections with a rich API of enumerable functions, views with declarative event handling, and connects it all to your existing API over a RESTful JSON interface. Created by THE Jeremy Ashkenas of Document Cloud (creator of CoffeeScript – more on that later).
-{%endblockquote%}
+{% blockquote Jeremy Ashkenas %}
+Backbone.js gives structure to web applications by providing models with key-value binding and custom events, collections with a rich API of enumerable functions, views with declarative event handling, and connects it all to your existing API over a RESTful JSON interface.{% endblockquote  %}
 
 ##Setting the stage
 In this post we’re going to make our own sample Backbone.js app that utilizes Twitter’s search API to scrape tweets and display them with the underscore templating engine and twitter bootstrap themes with a subtle patterns background. Node.js will deliver our static html file while Dropbox will host our JavaScript files (providing us with a make-shift CDN “Content Delivery Network”). Our app will be hosted on www.cloudfoundry.com with www.c9.io as our staging server while using git as our source control.

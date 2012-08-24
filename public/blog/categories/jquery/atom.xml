@@ -4,7 +4,7 @@
   <title><![CDATA[Category: jQuery | david m. johnson]]></title>
   <link href="http://davidmjohnson.me/blog/categories/jquery/atom.xml" rel="self"/>
   <link href="http://davidmjohnson.me/"/>
-  <updated>2012-08-23T16:54:25-05:00</updated>
+  <updated>2012-08-24T02:24:05-05:00</updated>
   <id>http://davidmjohnson.me/</id>
   <author>
     <name><![CDATA[david m. johnson]]></name>
@@ -22,7 +22,7 @@
 
 <p>Backbone.js is a JavaScript framework that manages complexity on the client while enabling the creation of rich HTML5 applications in a MVC-style fashion. For the more tech-savvy:</p>
 
-<p><blockquote><p>Backbone.js gives structure to web applications by providing models with key-value binding and custom events, collections with a rich API of enumerable functions, views with declarative event handling, and connects it all to your existing API over a RESTful JSON interface. Created by THE Jeremy Ashkenas of Document Cloud (creator of CoffeeScript – more on that later).</p></blockquote></p>
+<p><blockquote><p>Backbone.js gives structure to web applications by providing models with key-value binding and custom events, collections with a rich API of enumerable functions, views with declarative event handling, and connects it all to your existing API over a RESTful JSON interface.</p></blockquote></p>
 
 <h2>Setting the stage</h2>
 

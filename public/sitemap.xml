@@ -2,7 +2,7 @@
 <urlset xmlns='http://www.sitemaps.org/schemas/sitemap/0.9'>
     <url>
         <loc>http://davidmjohnson.me/blog/2011/05/26/silverlight-3d-part-one/</loc>
-        <lastmod>2012-08-23T16:54:23-05:00</lastmod>
+        <lastmod>2012-08-24T01:09:53-05:00</lastmod>
     </url>
     <url>
         <loc>http://davidmjohnson.me/blog/2011/08/11/getting-started-with-f-number/</loc>
@@ -10,13 +10,13 @@
     </url>
     <url>
         <loc>http://davidmjohnson.me/blog/2011/08/31/testing-html5-web-apps-with-watir/</loc>
-        <lastmod>2012-08-23T14:29:48-05:00</lastmod>
+        <lastmod>2012-08-24T02:14:24-05:00</lastmod>
     </url>
     <url>
         <loc>
             http://davidmjohnson.me/blog/2012/05/12/roll-your-own-twitter-feed-with-backbone-dot-js/
         </loc>
-        <lastmod>2012-08-22T10:48:06-05:00</lastmod>
+        <lastmod>2012-08-24T00:57:42-05:00</lastmod>
     </url>
     <url>
         <loc>http://davidmjohnson.me/blog/2012/08/17/first-post-on-new-blog/</loc>
@@ -24,10 +24,10 @@
     </url>
     <url>
         <loc>http://davidmjohnson.me/blog/archives/</loc>
-        <lastmod>2012-08-23T16:54:23-05:00</lastmod>
+        <lastmod>2012-08-24T02:14:24-05:00</lastmod>
     </url>
     <url>
         <loc>http://davidmjohnson.me/</loc>
-        <lastmod>2012-08-23T16:54:23-05:00</lastmod>
+        <lastmod>2012-08-24T02:14:24-05:00</lastmod>
     </url>
 </urlset>

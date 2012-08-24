@@ -4,7 +4,7 @@
   <title><![CDATA[Category: ruby | david m. johnson]]></title>
   <link href="http://davidmjohnson.me/blog/categories/ruby/atom.xml" rel="self"/>
   <link href="http://davidmjohnson.me/"/>
-  <updated>2012-08-23T16:54:25-05:00</updated>
+  <updated>2012-08-24T02:24:05-05:00</updated>
   <id>http://davidmjohnson.me/</id>
   <author>
     <name><![CDATA[david m. johnson]]></name>
@@ -30,7 +30,7 @@
 
 <h2>The Test</h2>
 
-<p><video width='640' height='320' preload='none' controls poster=' http://s3.imathis.com/video/zero-to-fancy-buttons.png'><source src='http://s3.imathis.com/video/zero-to-fancy-buttons.mp4' type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"'/></video></p>
+<p><iframe width="" height="" src="http://www.youtube.com/embed/640 320 sKsQFLB6ZG8 " frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe></p>
 
 <p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>The Code </span></figcaption>
  <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>

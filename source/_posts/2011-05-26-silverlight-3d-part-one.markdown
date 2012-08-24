@@ -44,7 +44,7 @@ By default GPU Acceleration is not enabled, so go ahead and include this extra p
     <!--  Set other parameters here  -->
 {% endcodeblock %}
 
-{% codeblock lang:xaml Add the control, Add the Event Handler, Declare your variables %}
+{% codeblock lang:xml Add the control, Add the Event Handler, Declare your variables %}
 <Grid x:Name="LayoutRoot" Background="Black">
     <DrawingSurface Name="surface" Draw="surface_Draw"  Loaded="surface_Loaded" />
 </Grid>
@@ -134,7 +134,7 @@ The first parameter, MathHelper.PiOver4, corresponds to .785 radians which is ro
 ###Step 4: Working with shaders
 After we multiply our view and projection matrices we yield world space. This space will then be passed into what is known as a vertex shader. A vertex shader is a graphics processing function used to add special effects to objects in a 3D environment. Vertex shaders are run once for each vertex given to the graphics processor. The purpose is to transform each vertex’s 3D position in virtual space to the 2D coordinate at which it appears on the screen (as well as a depth value for the Z-buffer). Vertex shaders can manipulate properties such as position, color, and texture coordinate, but cannot create new vertices. The output of the vertex shader goes to the next stage in the pipeline, which is either a geometry shader if present or the rasterizer otherwise. Similarly, A pixel shader is a computation kernel function that computes color and other attributes of each pixel. Pixel shaders range from always outputting the same color, to applying a lighting value, to doing bump mapping, shadows, specular highlights, translucency and other phenomena. For our purposes we will define a basic vertex and pixel shader using HLSL (High Level Shader Language) that will not perform any additional manipulations but simply pass our data through for rendering. Here is the code below:
 
-{% codeblock lang:hlsl Triangle.vs.hlsl %}
+{% codeblock lang:csharp Triangle.vs.hlsl %}
 // transformation matrix provided by the application
 float4x4 WorldViewProj : register(c0);
  
@@ -169,7 +169,7 @@ VertexShaderOutput main(VertexData vertex)
 
 {% endcodeblock %}
 
-{% codeblock lang:hlsl Triangle.pl.hlsl %}
+{% codeblock lang:csharp Triangle.pl.hlsl %}
 struct VertexShaderOutput
 {
   float4 Position : POSITION;

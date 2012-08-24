@@ -14,7 +14,7 @@ Watir means “Web Application Testing in Ruby.” It’s an easy way to automat
 So let’s say hypothetically you have an HTML5 web app using jQuery Mobile running on top of ASP.NET MVC 3. A quick and easy way to test the UI functionality of a new user registration would be to use Watir.
 
 ##The Test
-{% video http://s3.imathis.com/video/zero-to-fancy-buttons.mp4 640 320 http://s3.imathis.com/video/zero-to-fancy-buttons.png %}
+{% youtube 640 320 sKsQFLB6ZG8 %}
 
 {% codeblock lang:ruby The Code %}
 #INTERACTIVE TESTING WITH RUBY GEMS

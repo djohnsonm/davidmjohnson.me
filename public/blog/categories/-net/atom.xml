@@ -4,7 +4,7 @@
   <title><![CDATA[Category: .NET | david m. johnson]]></title>
   <link href="http://davidmjohnson.me/blog/categories/-net/atom.xml" rel="self"/>
   <link href="http://davidmjohnson.me/"/>
-  <updated>2012-08-23T16:54:25-05:00</updated>
+  <updated>2012-08-24T02:24:05-05:00</updated>
   <id>http://davidmjohnson.me/</id>
   <author>
     <name><![CDATA[david m. johnson]]></name>
@@ -74,7 +74,20 @@ Microsoft.Xna.Framework.Math.dll</p>
 </span><span class='line'><span class="nt">&lt;p&gt;</span>
 </span></code></pre></td></tr></table></div></figure></notextile></div></p>
 
-<p>Liquid error: ClassNotFound: no lexer for alias 'xaml' found</p>
+<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>Add the control, Add the Event Handler, Declare your variables </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='xml'><span class='line'><span class="nt">&lt;Grid</span> <span class="na">x:Name=</span><span class="s">&quot;LayoutRoot&quot;</span> <span class="na">Background=</span><span class="s">&quot;Black&quot;</span><span class="nt">&gt;&lt;/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;pre&gt;&lt;code&gt;</span><span class="ni">&amp;lt;</span>DrawingSurface Name=&quot;surface&quot; Draw=&quot;surface_Draw&quot;  Loaded=&quot;surface_Loaded&quot; /<span class="ni">&amp;gt;</span>
+</span><span class='line'><span class="nt">&lt;/code&gt;&lt;/pre&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;p&gt;&lt;/Grid&gt;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
 
 <p>The two events we will be focusing on in this application primarily are the “Draw” event and the “Loaded” event. Also, declare these variables in your MainPage.xaml.cs class. We’ll dive into what they mean in a little later.</p>
 
@@ -225,9 +238,103 @@ Microsoft.Xna.Framework.Math.dll</p>
 
 <p>After we multiply our view and projection matrices we yield world space. This space will then be passed into what is known as a vertex shader. A vertex shader is a graphics processing function used to add special effects to objects in a 3D environment. Vertex shaders are run once for each vertex given to the graphics processor. The purpose is to transform each vertex’s 3D position in virtual space to the 2D coordinate at which it appears on the screen (as well as a depth value for the Z-buffer). Vertex shaders can manipulate properties such as position, color, and texture coordinate, but cannot create new vertices. The output of the vertex shader goes to the next stage in the pipeline, which is either a geometry shader if present or the rasterizer otherwise. Similarly, A pixel shader is a computation kernel function that computes color and other attributes of each pixel. Pixel shaders range from always outputting the same color, to applying a lighting value, to doing bump mapping, shadows, specular highlights, translucency and other phenomena. For our purposes we will define a basic vertex and pixel shader using HLSL (High Level Shader Language) that will not perform any additional manipulations but simply pass our data through for rendering. Here is the code below:</p>
 
-<p>Liquid error: ClassNotFound: no lexer for alias 'hlsl' found</p>
+<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>Triangle.vs.hlsl </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+</pre></td><td class='code'><pre><code class='csharp'><span class='line'><span class="c1">// transformation matrix provided by the application</span>
+</span><span class='line'><span class="n">float4x4</span> <span class="n">WorldViewProj</span> <span class="p">:</span> <span class="n">register</span><span class="p">(</span><span class="n">c0</span><span class="p">);&lt;/</span><span class="n">p</span><span class="p">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">&lt;</span><span class="n">p</span><span class="p">&gt;</span><span class="c1">// vertex input to the shader</span>
+</span><span class='line'><span class="k">struct</span> <span class="nc">VertexData</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>  <span class="n">float3</span> <span class="n">Position</span> <span class="p">:</span> <span class="n">POSITION</span><span class="p">;</span>
+</span><span class='line'>  <span class="n">float4</span> <span class="n">Color</span> <span class="p">:</span> <span class="n">COLOR</span><span class="p">;</span>
+</span><span class='line'><span class="p">};&lt;/</span><span class="n">p</span><span class="p">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">&lt;</span><span class="n">p</span><span class="p">&gt;</span><span class="c1">// vertex shader output passed through to geometry</span>
+</span><span class='line'><span class="c1">// processing and a pixel shader</span>
+</span><span class='line'><span class="k">struct</span> <span class="nc">VertexShaderOutput</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>  <span class="n">float4</span> <span class="n">Position</span> <span class="p">:</span> <span class="n">POSITION</span><span class="p">;</span>
+</span><span class='line'>  <span class="n">float4</span> <span class="n">Color</span> <span class="p">:</span> <span class="n">COLOR</span><span class="p">;</span>
+</span><span class='line'><span class="p">};&lt;/</span><span class="n">p</span><span class="p">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">&lt;</span><span class="n">p</span><span class="p">&gt;</span><span class="c1">// main shader function</span>
+</span><span class='line'><span class="n">VertexShaderOutput</span> <span class="nf">main</span><span class="p">(</span><span class="n">VertexData</span> <span class="n">vertex</span><span class="p">)</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>  <span class="n">VertexShaderOutput</span> <span class="n">output</span><span class="p">;&lt;/</span><span class="n">p</span><span class="p">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">&lt;</span><span class="n">p</span><span class="p">&gt;</span>  <span class="c1">// apply standard transformation for rendering</span>
+</span><span class='line'>  <span class="n">output</span><span class="p">.</span><span class="n">Position</span> <span class="p">=</span> <span class="n">mul</span><span class="p">(</span><span class="n">float4</span><span class="p">(</span><span class="n">vertex</span><span class="p">.</span><span class="n">Position</span><span class="p">,</span><span class="m">1</span><span class="p">),</span> <span class="n">WorldViewProj</span><span class="p">);&lt;/</span><span class="n">p</span><span class="p">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">&lt;</span><span class="n">p</span><span class="p">&gt;</span>  <span class="c1">// pass the color through to the next stage</span>
+</span><span class='line'>  <span class="n">output</span><span class="p">.</span><span class="n">Color</span> <span class="p">=</span> <span class="n">vertex</span><span class="p">.</span><span class="n">Color</span><span class="p">;&lt;/</span><span class="n">p</span><span class="p">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">&lt;</span><span class="n">p</span><span class="p">&gt;</span>  <span class="k">return</span> <span class="n">output</span><span class="p">;</span>
+</span><span class='line'><span class="p">}&lt;/</span><span class="n">p</span><span class="p">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">&lt;</span><span class="n">p</span><span class="p">&gt;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
 
-<p>Liquid error: ClassNotFound: no lexer for alias 'hlsl' found</p>
+<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>Triangle.pl.hlsl </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class='csharp'><span class='line'><span class="k">struct</span> <span class="nc">VertexShaderOutput</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>  <span class="n">float4</span> <span class="n">Position</span> <span class="p">:</span> <span class="n">POSITION</span><span class="p">;</span>
+</span><span class='line'>  <span class="n">float4</span> <span class="n">Color</span> <span class="p">:</span> <span class="n">COLOR</span><span class="p">;</span>
+</span><span class='line'><span class="p">};&lt;/</span><span class="n">p</span><span class="p">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">&lt;</span><span class="n">p</span><span class="p">&gt;</span><span class="c1">// main shader function</span>
+</span><span class='line'><span class="n">float4</span> <span class="nf">main</span><span class="p">(</span><span class="n">VertexShaderOutput</span> <span class="n">vertex</span><span class="p">)</span> <span class="p">:</span> <span class="n">COLOR</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>  <span class="k">return</span> <span class="n">vertex</span><span class="p">.</span><span class="n">Color</span><span class="p">;</span>
+</span><span class='line'><span class="p">}&lt;/</span><span class="n">p</span><span class="p">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">&lt;</span><span class="n">p</span><span class="p">&gt;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
 
 <h3>Compile</h3>
 
