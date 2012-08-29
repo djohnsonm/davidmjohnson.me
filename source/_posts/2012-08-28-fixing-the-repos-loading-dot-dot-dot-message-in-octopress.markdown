@@ -5,7 +5,7 @@ date: 2012-08-28 23:01
 comments: true
 categories: 
 ---
-If your github.js plugin displays a "Loading repos..." messages then it's using an old API. This can be fixed by replacing the github.js file with the one depicted below. 
+If your github.js plugin displays a "Loading repos..." message then it's using an old API. This can be fixed by replacing your github.js file with the one depicted below. 
 
 The pull request may or may not get accepted but here it is.
 <a href="https://github.com/imathis/octopress/pull/732">#732</a>
