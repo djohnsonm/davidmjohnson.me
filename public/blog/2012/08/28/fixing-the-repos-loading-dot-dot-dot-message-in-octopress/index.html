@@ -5,11 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Testing HTML5 Web Apps with WATIR - david m. johnson</title>
+  <title>Fixing the 'Repos loading...' message in Octopress - david m. johnson</title>
   <meta name="author" content="david m. johnson">
 
   
-  <meta name="description" content="What is WATIR? Watir means “Web Application Testing in Ruby.” It’s an easy way to automate the testing of your Web Apps through a Ruby interactive &hellip;">
+  <meta name="description" content="If your github.js plugin displays a &#8220;Loading repos&#8230;&#8221; messages then it&#8217;s using an old API. This can be fixed by replacing the &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://davidmjohnson.me/blog/2011/08/31/testing-html5-web-apps-with-watir/">
+  <link rel="canonical" href="http://davidmjohnson.me/blog/2012/08/28/fixing-the-repos-loading-dot-dot-dot-message-in-octopress/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -80,7 +80,7 @@
   
   <header>
     
-      <h1 class="entry-title">Testing HTML5 Web Apps With WATIR</h1>
+      <h1 class="entry-title">Fixing the 'Repos Loading...' Message in Octopress</h1>
     
     
       <p class="meta">
@@ -96,7 +96,7 @@
   
 
 
-<time datetime="2011-08-31T13:59:00-05:00" pubdate data-updated="true">Aug 31<span>st</span>, 2011</time>
+<time datetime="2012-08-28T23:01:00-05:00" pubdate data-updated="true">Aug 28<span>th</span>, 2012</time>
         
          | <a href="#disqus_thread">Comments</a>
         
@@ -105,24 +105,12 @@
   </header>
 
 
-<div class="entry-content"><p><img src="https://dl.dropbox.com/u/10021156/blog/InteractiveRuby.png"></p>
+<div class="entry-content"><p>If your github.js plugin displays a &#8220;Loading repos&#8230;&#8221; messages then it&#8217;s using an old API. This can be fixed by replacing the github.js file with the one depicted below.</p>
 
-<h2>What is WATIR?</h2>
+<p>The pull request may or may not get accepted but here it is.
+<a href="https://github.com/imathis/octopress/pull/732">#732</a></p>
 
-<p>Watir means “Web Application Testing in Ruby.” It’s an easy way to automate the testing of your Web Apps through a Ruby interactive console. Watir will click buttons, fill in forms, navigate to pages, you name it. It’s also compatible with all major browsers.</p>
-
-<h2>How do I get started?</h2>
-
-<p>So let’s say hypothetically you have an HTML5 web app using jQuery Mobile running on top of ASP.NET MVC 3. A quick and easy way to test the UI functionality of a new user registration would be to use Watir.</p>
-
-<h2>The Test</h2>
-
-<iframe width="" height="" src="http://www.youtube.com/embed/640 320 sKsQFLB6ZG8 " frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>
-
-
-
-
-<figure class='code'><figcaption><span>The Code </span></figcaption>
+<figure class='code'><figcaption><span>Github.js </span></figcaption>
  <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
@@ -149,46 +137,58 @@
 <span class='line-number'>24</span>
 <span class='line-number'>25</span>
 <span class='line-number'>26</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="c1">#INTERACTIVE TESTING WITH RUBY GEMS</span>
-</span><span class='line'><span class="c1">#LOAD UP RUBY GEMS, Watir and Watir-webdriver</span>
-</span><span class='line'><span class="nb">require</span> <span class="s1">&#39;rubygems&#39;</span>
-</span><span class='line'><span class="c1">#this is for IE</span>
-</span><span class='line'><span class="nb">require</span> <span class="s1">&#39;watir&#39;</span>
-</span><span class='line'><span class="c1">#this is for Chrome</span>
-</span><span class='line'><span class="c1">#require &#39;watir-webdriver&#39;</span>
-</span><span class='line'><span class="c1">#load Browser</span>
-</span><span class='line'><span class="n">b</span> <span class="o">=</span> <span class="no">Watir</span><span class="o">::</span><span class="no">Browser</span><span class="o">.</span><span class="n">new</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="kd">var</span> <span class="nx">github</span> <span class="o">=</span> <span class="p">(</span><span class="kd">function</span><span class="p">(){</span>
+</span><span class='line'>  <span class="kd">function</span> <span class="nx">render</span><span class="p">(</span><span class="nx">target</span><span class="p">,</span> <span class="nx">repos</span><span class="p">){</span>
+</span><span class='line'>    <span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="nx">fragment</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="nx">t</span> <span class="o">=</span> <span class="nx">$</span><span class="p">(</span><span class="nx">target</span><span class="p">)[</span><span class="mi">0</span><span class="p">];</span>
 </span><span class='line'>
-</span><span class='line'><span class="c1">#go to URL</span>
-</span><span class='line'><span class="n">b</span><span class="o">.</span><span class="n">goto</span> <span class="s1">&#39;http://watirtesting.apphb.com/&#39;</span>
+</span><span class='line'>      <span class="k">for</span><span class="p">(</span><span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">repos</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>        <span class="nx">fragment</span> <span class="o">+=</span> <span class="s1">&#39;&lt;li&gt;&lt;a href=&quot;&#39;</span><span class="o">+</span><span class="nx">repos</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">html_url</span> <span class="o">+</span><span class="s1">&#39;&quot;&gt;&#39;</span><span class="o">+</span><span class="nx">repos</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">name</span><span class="o">+</span><span class="s1">&#39;&lt;/a&gt;&lt;p&gt;&#39;</span><span class="o">+</span><span class="nx">repos</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">description</span><span class="o">+</span><span class="s1">&#39;&lt;/p&gt;&lt;/li&gt;&#39;</span><span class="p">;</span>
+</span><span class='line'>      <span class="p">}</span>
+</span><span class='line'>    <span class="nx">t</span><span class="p">.</span><span class="nx">innerHTML</span> <span class="o">=</span> <span class="nx">fragment</span><span class="p">;</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>  <span class="k">return</span> <span class="p">{</span>
+</span><span class='line'>    <span class="nx">showRepos</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">options</span><span class="p">){</span>
+</span><span class='line'>      <span class="nx">$</span><span class="p">.</span><span class="nx">ajax</span><span class="p">({</span>
+</span><span class='line'>          <span class="nx">url</span><span class="o">:</span> <span class="s2">&quot;https://api.github.com/users/&quot;</span><span class="o">+</span><span class="nx">options</span><span class="p">.</span><span class="nx">user</span><span class="o">+</span><span class="s2">&quot;/repos?callback=?&quot;</span>
+</span><span class='line'>        <span class="p">,</span> <span class="nx">type</span><span class="o">:</span> <span class="s1">&#39;jsonp&#39;</span>
+</span><span class='line'>        <span class="p">,</span> <span class="nx">error</span><span class="o">:</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span> <span class="nx">$</span><span class="p">(</span><span class="nx">options</span><span class="p">.</span><span class="nx">target</span> <span class="o">+</span> <span class="s1">&#39; li.loading&#39;</span><span class="p">).</span><span class="nx">addClass</span><span class="p">(</span><span class="s1">&#39;error&#39;</span><span class="p">).</span><span class="nx">text</span><span class="p">(</span><span class="s2">&quot;Error loading feed&quot;</span><span class="p">);</span> <span class="p">}</span>
+</span><span class='line'>        <span class="p">,</span> <span class="nx">success</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">data</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>          <span class="kd">var</span> <span class="nx">repos</span> <span class="o">=</span> <span class="p">[];</span>
+</span><span class='line'>           <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">data</span> <span class="o">||</span> <span class="o">!</span><span class="nx">data</span><span class="p">.</span><span class="nx">data</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span><span class="p">;</span> <span class="p">}</span>
+</span><span class='line'>           <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">data</span><span class="p">.</span><span class="nx">data</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>              <span class="k">if</span> <span class="p">(</span><span class="nx">options</span><span class="p">.</span><span class="nx">skip_forks</span> <span class="o">&amp;&amp;</span> <span class="nx">data</span><span class="p">.</span><span class="nx">data</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">fork</span><span class="p">)</span> <span class="p">{</span> <span class="k">continue</span><span class="p">;</span> <span class="p">}</span>
+</span><span class='line'>              <span class="nx">repos</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">data</span><span class="p">.</span><span class="nx">data</span><span class="p">[</span><span class="nx">i</span><span class="p">]);</span>
+</span><span class='line'>            <span class="p">}</span>
+</span><span class='line'>          <span class="nx">repos</span><span class="p">.</span><span class="nx">sort</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">a</span><span class="p">,</span> <span class="nx">b</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>            <span class="kd">var</span> <span class="nx">aDate</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">Date</span><span class="p">(</span><span class="nx">a</span><span class="p">.</span><span class="nx">pushed_at</span><span class="p">).</span><span class="nx">valueOf</span><span class="p">(),</span>
+</span><span class='line'>                <span class="nx">bDate</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">Date</span><span class="p">(</span><span class="nx">b</span><span class="p">.</span><span class="nx">pushed_at</span><span class="p">).</span><span class="nx">valueOf</span><span class="p">();</span>
 </span><span class='line'>
-</span><span class='line'><span class="c1">#Select the Register Link</span>
-</span><span class='line'><span class="n">l</span> <span class="o">=</span> <span class="n">b</span><span class="o">.</span><span class="n">link</span><span class="p">(</span><span class="ss">:name</span><span class="p">,</span><span class="s2">&quot;Register&quot;</span><span class="p">)</span>
-</span><span class='line'><span class="n">l</span><span class="o">.</span><span class="n">exists?</span>
-</span><span class='line'><span class="n">l</span><span class="o">.</span><span class="n">click</span>
+</span><span class='line'>            <span class="k">if</span> <span class="p">(</span><span class="nx">aDate</span> <span class="o">===</span> <span class="nx">bDate</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="mi">0</span><span class="p">;</span> <span class="p">}</span>
+</span><span class='line'>            <span class="k">return</span> <span class="nx">aDate</span> <span class="o">&gt;</span> <span class="nx">bDate</span> <span class="o">?</span> <span class="o">-</span><span class="mi">1</span> <span class="o">:</span> <span class="mi">1</span><span class="p">;</span>
+</span><span class='line'>          <span class="p">});</span>
 </span><span class='line'>
-</span><span class='line'><span class="c1">##Populate Register Fields</span>
-</span><span class='line'><span class="n">b</span><span class="o">.</span><span class="n">text_field</span><span class="p">(</span><span class="ss">:name</span><span class="p">,</span> <span class="s2">&quot;UserName&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s2">&quot;Fake Name&quot;</span><span class="p">)</span>
-</span><span class='line'><span class="n">b</span><span class="o">.</span><span class="n">text_field</span><span class="p">(</span><span class="ss">:name</span><span class="p">,</span> <span class="s2">&quot;Email&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s2">&quot;SampleUser@SampleUser.org&quot;</span><span class="p">)</span>
-</span><span class='line'><span class="n">b</span><span class="o">.</span><span class="n">text_field</span><span class="p">(</span><span class="ss">:name</span><span class="p">,</span> <span class="s2">&quot;Password&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s2">&quot;Password12345&quot;</span><span class="p">)</span>
-</span><span class='line'><span class="n">b</span><span class="o">.</span><span class="n">text_field</span><span class="p">(</span><span class="ss">:name</span><span class="p">,</span> <span class="s2">&quot;ConfirmPassword&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s2">&quot;Password12345&quot;</span><span class="p">)</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1">##Create New User</span>
-</span><span class='line'><span class="n">b</span><span class="o">.</span><span class="n">button</span><span class="p">(</span><span class="ss">:value</span> <span class="o">=&gt;</span> <span class="s1">&#39;Register&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">click</span>
+</span><span class='line'>          <span class="k">if</span> <span class="p">(</span><span class="nx">options</span><span class="p">.</span><span class="nx">count</span><span class="p">)</span> <span class="p">{</span> <span class="nx">repos</span><span class="p">.</span><span class="nx">splice</span><span class="p">(</span><span class="nx">options</span><span class="p">.</span><span class="nx">count</span><span class="p">);</span> <span class="p">}</span>
+</span><span class='line'>          <span class="nx">render</span><span class="p">(</span><span class="nx">options</span><span class="p">.</span><span class="nx">target</span><span class="p">,</span> <span class="nx">repos</span><span class="p">);</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>      <span class="p">});</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>  <span class="p">};</span>
+</span><span class='line'><span class="p">})();</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
-<h2>Who uses WATIR?</h2>
 
-<p>Facebook
-SAP
-Oracle
-Yahoo
-Expedia</p>
-
-<h2>Get WATIR</h2>
-
-<p>Watir can be downloaded. You’ll need to install ruby as well. All watir commands can be run from the Ruby Interactive Console.</p>
 </div>
 
 
@@ -211,21 +211,15 @@ Expedia</p>
   
 
 
-<time datetime="2011-08-31T13:59:00-05:00" pubdate data-updated="true">Aug 31<span>st</span>, 2011</time>
+<time datetime="2012-08-28T23:01:00-05:00" pubdate data-updated="true">Aug 28<span>th</span>, 2012</time>
       
-
-<span class="categories">
-  
-    <a class='category' href='/blog/categories/watir/'>WATIR</a>, <a class='category' href='/blog/categories/html5/'>html5</a>, <a class='category' href='/blog/categories/ruby/'>ruby</a>, <a class='category' href='/blog/categories/testing/'>testing</a>
-  
-</span>
 
 
     </p>
     
       <div class="sharing">
   
-  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://davidmjohnson.me/blog/2011/08/31/testing-html5-web-apps-with-watir/" data-via="djohnsonm" data-counturl="http://davidmjohnson.me/blog/2011/08/31/testing-html5-web-apps-with-watir/" >Tweet</a>
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://davidmjohnson.me/blog/2012/08/28/fixing-the-repos-loading-dot-dot-dot-message-in-octopress/" data-via="djohnsonm" data-counturl="http://davidmjohnson.me/blog/2012/08/28/fixing-the-repos-loading-dot-dot-dot-message-in-octopress/" >Tweet</a>
   
   
   <div class="g-plusone" data-size="medium"></div>
@@ -238,10 +232,8 @@ Expedia</p>
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/2011/08/11/getting-started-with-f-number/" title="Previous Post: Getting started with F#">&laquo; Getting started with F#</a>
+        <a class="basic-alignment left" href="/blog/2012/08/17/first-post-on-new-blog/" title="Previous Post: First post on new blog">&laquo; First post on new blog</a>
       
-      
-        <a class="basic-alignment right" href="/blog/2012/05/12/roll-your-own-twitter-feed-with-backbone-dot-js/" title="Next Post: Roll your own Twitter Feed with Backbone.js">Roll your own Twitter Feed with Backbone.js &raquo;</a>
       
     </p>
   </footer>
@@ -467,8 +459,8 @@ src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
       
         
         // var disqus_developer = 1;
-        var disqus_identifier = 'http://davidmjohnson.me/blog/2011/08/31/testing-html5-web-apps-with-watir/';
-        var disqus_url = 'http://davidmjohnson.me/blog/2011/08/31/testing-html5-web-apps-with-watir/';
+        var disqus_identifier = 'http://davidmjohnson.me/blog/2012/08/28/fixing-the-repos-loading-dot-dot-dot-message-in-octopress/';
+        var disqus_url = 'http://davidmjohnson.me/blog/2012/08/28/fixing-the-repos-loading-dot-dot-dot-message-in-octopress/';
         var disqus_script = 'embed.js';
       
     (function () {
