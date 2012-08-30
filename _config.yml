@@ -51,7 +51,7 @@ default_asides: [asides/gravatar.html,  asides/about.html, asides/recent_posts.h
 # and add an array with the asides you want to use.
 # blog_index_asides:
 # post_asides:
-# page_asides:
+page_asides: [custom/asides/indexer.html]
 
 # ----------------------- #
 #   3rd Party Settings    #
