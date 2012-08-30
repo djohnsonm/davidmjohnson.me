@@ -9,7 +9,7 @@
   <meta name="author" content="david m. johnson">
 
   
-  <meta name="description" content="If your github.js plugin displays a &#8220;Loading repos&#8230;&#8221; messages then it&#8217;s using an old API. This can be fixed by replacing the &hellip;">
+  <meta name="description" content="If your github.js plugin displays a &#8220;Loading repos&#8230;&#8221; message then it&#8217;s using an old API. This can be fixed by replacing your &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -102,6 +102,126 @@
 <time datetime="2012-08-28T23:01:00-05:00" pubdate data-updated="true">Aug 28<span>th</span>, 2012</time>
         
          | <a href="/blog/2012/08/28/fixing-the-repos-loading-dot-dot-dot-message-in-octopress/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>If your github.js plugin displays a &#8220;Loading repos&#8230;&#8221; message then it&#8217;s using an old API. This can be fixed by replacing your github.js file with the one depicted below.</p>
+
+<p>The pull request may or may not get accepted but here it is: <a href="https://github.com/imathis/octopress/pull/732">#732</a></p>
+
+<figure class='code'><figcaption><span>Github.js </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="kd">var</span> <span class="nx">github</span> <span class="o">=</span> <span class="p">(</span><span class="kd">function</span><span class="p">(){</span>
+</span><span class='line'>  <span class="kd">function</span> <span class="nx">render</span><span class="p">(</span><span class="nx">target</span><span class="p">,</span> <span class="nx">repos</span><span class="p">){</span>
+</span><span class='line'>    <span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="nx">fragment</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="nx">t</span> <span class="o">=</span> <span class="nx">$</span><span class="p">(</span><span class="nx">target</span><span class="p">)[</span><span class="mi">0</span><span class="p">];</span>
+</span><span class='line'>
+</span><span class='line'>      <span class="k">for</span><span class="p">(</span><span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">repos</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>        <span class="nx">fragment</span> <span class="o">+=</span> <span class="s1">&#39;&lt;li&gt;&lt;a href=&quot;&#39;</span><span class="o">+</span><span class="nx">repos</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">html_url</span> <span class="o">+</span><span class="s1">&#39;&quot;&gt;&#39;</span><span class="o">+</span><span class="nx">repos</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">name</span><span class="o">+</span><span class="s1">&#39;&lt;/a&gt;&lt;p&gt;&#39;</span><span class="o">+</span><span class="nx">repos</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">description</span><span class="o">+</span><span class="s1">&#39;&lt;/p&gt;&lt;/li&gt;&#39;</span><span class="p">;</span>
+</span><span class='line'>      <span class="p">}</span>
+</span><span class='line'>    <span class="nx">t</span><span class="p">.</span><span class="nx">innerHTML</span> <span class="o">=</span> <span class="nx">fragment</span><span class="p">;</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>  <span class="k">return</span> <span class="p">{</span>
+</span><span class='line'>    <span class="nx">showRepos</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">options</span><span class="p">){</span>
+</span><span class='line'>      <span class="nx">$</span><span class="p">.</span><span class="nx">ajax</span><span class="p">({</span>
+</span><span class='line'>          <span class="nx">url</span><span class="o">:</span> <span class="s2">&quot;https://api.github.com/users/&quot;</span><span class="o">+</span><span class="nx">options</span><span class="p">.</span><span class="nx">user</span><span class="o">+</span><span class="s2">&quot;/repos?callback=?&quot;</span>
+</span><span class='line'>        <span class="p">,</span> <span class="nx">type</span><span class="o">:</span> <span class="s1">&#39;jsonp&#39;</span>
+</span><span class='line'>        <span class="p">,</span> <span class="nx">error</span><span class="o">:</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span> <span class="nx">$</span><span class="p">(</span><span class="nx">options</span><span class="p">.</span><span class="nx">target</span> <span class="o">+</span> <span class="s1">&#39; li.loading&#39;</span><span class="p">).</span><span class="nx">addClass</span><span class="p">(</span><span class="s1">&#39;error&#39;</span><span class="p">).</span><span class="nx">text</span><span class="p">(</span><span class="s2">&quot;Error loading feed&quot;</span><span class="p">);</span> <span class="p">}</span>
+</span><span class='line'>        <span class="p">,</span> <span class="nx">success</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">data</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>          <span class="kd">var</span> <span class="nx">repos</span> <span class="o">=</span> <span class="p">[];</span>
+</span><span class='line'>           <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">data</span> <span class="o">||</span> <span class="o">!</span><span class="nx">data</span><span class="p">.</span><span class="nx">data</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span><span class="p">;</span> <span class="p">}</span>
+</span><span class='line'>           <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">data</span><span class="p">.</span><span class="nx">data</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>              <span class="k">if</span> <span class="p">(</span><span class="nx">options</span><span class="p">.</span><span class="nx">skip_forks</span> <span class="o">&amp;&amp;</span> <span class="nx">data</span><span class="p">.</span><span class="nx">data</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">fork</span><span class="p">)</span> <span class="p">{</span> <span class="k">continue</span><span class="p">;</span> <span class="p">}</span>
+</span><span class='line'>              <span class="nx">repos</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">data</span><span class="p">.</span><span class="nx">data</span><span class="p">[</span><span class="nx">i</span><span class="p">]);</span>
+</span><span class='line'>            <span class="p">}</span>
+</span><span class='line'>          <span class="nx">repos</span><span class="p">.</span><span class="nx">sort</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">a</span><span class="p">,</span> <span class="nx">b</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>            <span class="kd">var</span> <span class="nx">aDate</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">Date</span><span class="p">(</span><span class="nx">a</span><span class="p">.</span><span class="nx">pushed_at</span><span class="p">).</span><span class="nx">valueOf</span><span class="p">(),</span>
+</span><span class='line'>                <span class="nx">bDate</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">Date</span><span class="p">(</span><span class="nx">b</span><span class="p">.</span><span class="nx">pushed_at</span><span class="p">).</span><span class="nx">valueOf</span><span class="p">();</span>
+</span><span class='line'>
+</span><span class='line'>            <span class="k">if</span> <span class="p">(</span><span class="nx">aDate</span> <span class="o">===</span> <span class="nx">bDate</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="mi">0</span><span class="p">;</span> <span class="p">}</span>
+</span><span class='line'>            <span class="k">return</span> <span class="nx">aDate</span> <span class="o">&gt;</span> <span class="nx">bDate</span> <span class="o">?</span> <span class="o">-</span><span class="mi">1</span> <span class="o">:</span> <span class="mi">1</span><span class="p">;</span>
+</span><span class='line'>          <span class="p">});</span>
+</span><span class='line'>
+</span><span class='line'>          <span class="k">if</span> <span class="p">(</span><span class="nx">options</span><span class="p">.</span><span class="nx">count</span><span class="p">)</span> <span class="p">{</span> <span class="nx">repos</span><span class="p">.</span><span class="nx">splice</span><span class="p">(</span><span class="nx">options</span><span class="p">.</span><span class="nx">count</span><span class="p">);</span> <span class="p">}</span>
+</span><span class='line'>          <span class="nx">render</span><span class="p">(</span><span class="nx">options</span><span class="p">.</span><span class="nx">target</span><span class="p">,</span> <span class="nx">repos</span><span class="p">);</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>      <span class="p">});</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>  <span class="p">};</span>
+</span><span class='line'><span class="p">})();</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2012/08/28/fixing-github-dot-js-in-octopress/">github.js in Octopress</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-08-28T21:56:00-05:00" pubdate data-updated="true">Aug 28<span>th</span>, 2012</time>
+        
+         | <a href="/blog/2012/08/28/fixing-github-dot-js-in-octopress/#disqus_thread">Comments</a>
         
       </p>
     
@@ -2198,6 +2318,11 @@ After they are built import both the .ps and .vs files into your silverlight pro
   
     
 <section>
+	  <img src="http://gravatar.com/avatar/738f71369f6bb7c0839d06f8f4b20580?s=200 " alt="Gravatar image" title="Gravatar Image" />
+  </section>
+
+
+<section>
   <h1>About Me</h1>
   <p>David M. Johnson is a life-long learner, developer, traveler, almost paleo, amateur theologian and chicagoan.</p>
     </section>
@@ -2210,6 +2335,10 @@ After they are built import both the .ps and .vs files into your silverlight pro
       </li>
     
       <li class="post">
+        <a href="/blog/2012/08/28/fixing-github-dot-js-in-octopress/">github.js in Octopress</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2012/08/17/first-post-on-new-blog/">First post on new blog</a>
       </li>
     
@@ -2219,10 +2348,6 @@ After they are built import both the .ps and .vs files into your silverlight pro
     
       <li class="post">
         <a href="/blog/2011/08/31/testing-html5-web-apps-with-watir/">Testing HTML5 Web Apps with WATIR</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2011/08/11/getting-started-with-f-number/">Getting started with F#</a>
       </li>
     
   </ul>
@@ -2365,12 +2490,12 @@ After they are built import both the .ps and .vs files into your silverlight pro
 
 <section>
   <h1>Tag Cloud</h1>
-      <span id="tag-cloud"><a href='/blog/categories/-net' style='font-size: 130.0%'>.NET</a> <a href='/blog/categories/3d' style='font-size: 160.0%'>3D</a> <a href='/blog/categories/blogging' style='font-size: 130.0%'>blogging</a> <a href='/blog/categories/code' style='font-size: 130.0%'>code</a> <a href='/blog/categories/css3' style='font-size: 130.0%'>css3</a> <a href='/blog/categories/f-' style='font-size: 130.0%'>f#</a> <a href='/blog/categories/functional-programming' style='font-size: 130.0%'>functional-programming</a> <a href='/blog/categories/html5' style='font-size: 160.0%'>html5</a> <a href='/blog/categories/jquery' style='font-size: 130.0%'>jQuery</a> <a href='/blog/categories/migrated' style='font-size: 130.0%'>migrated</a> <a href='/blog/categories/node-js' style='font-size: 130.0%'>node.js</a> <a href='/blog/categories/ruby' style='font-size: 130.0%'>ruby</a> <a href='/blog/categories/silverlight' style='font-size: 160.0%'>silverlight</a> <a href='/blog/categories/subtle-patterns' style='font-size: 130.0%'>subtle-patterns</a> <a href='/blog/categories/testing' style='font-size: 130.0%'>testing</a> <a href='/blog/categories/twitter-bootstrap' style='font-size: 130.0%'>twitter-bootstrap</a> <a href='/blog/categories/watir' style='font-size: 130.0%'>WATIR</a> <a href='/blog/categories/xna' style='font-size: 160.0%'>XNA</a> </span>
+      <span id="tag-cloud"><a href='/blog/categories/-net' style='font-size: 130.0%'>.NET</a> <a href='/blog/categories/3d' style='font-size: 160.0%'>3D</a> <a href='/blog/categories/blogging' style='font-size: 130.0%'>blogging</a> <a href='/blog/categories/code' style='font-size: 130.0%'>code</a> <a href='/blog/categories/css3' style='font-size: 130.0%'>css3</a> <a href='/blog/categories/f-' style='font-size: 130.0%'>f#</a> <a href='/blog/categories/functional-programming' style='font-size: 130.0%'>functional-programming</a> <a href='/blog/categories/github' style='font-size: 130.0%'>github</a> <a href='/blog/categories/html5' style='font-size: 160.0%'>html5</a> <a href='/blog/categories/javascript' style='font-size: 130.0%'>javascript</a> <a href='/blog/categories/jquery' style='font-size: 130.0%'>jQuery</a> <a href='/blog/categories/migrated' style='font-size: 130.0%'>migrated</a> <a href='/blog/categories/node-js' style='font-size: 130.0%'>node.js</a> <a href='/blog/categories/octopress' style='font-size: 130.0%'>octopress</a> <a href='/blog/categories/ruby' style='font-size: 130.0%'>ruby</a> <a href='/blog/categories/silverlight' style='font-size: 160.0%'>silverlight</a> <a href='/blog/categories/subtle-patterns' style='font-size: 130.0%'>subtle-patterns</a> <a href='/blog/categories/testing' style='font-size: 130.0%'>testing</a> <a href='/blog/categories/twitter-bootstrap' style='font-size: 130.0%'>twitter-bootstrap</a> <a href='/blog/categories/watir' style='font-size: 130.0%'>WATIR</a> <a href='/blog/categories/xna' style='font-size: 160.0%'>XNA</a> </span>
       </section>
 
 <section>
   <h1>Categories</h1>
-      <ul id="category-list"><li><a href='/blog/categories/-net'>.NET (1)</a></li><li><a href='/blog/categories/3d'>3D (2)</a></li><li><a href='/blog/categories/blogging'>blogging (1)</a></li><li><a href='/blog/categories/code'>code (1)</a></li><li><a href='/blog/categories/css3'>css3 (1)</a></li><li><a href='/blog/categories/f-'>f# (1)</a></li><li><a href='/blog/categories/functional-programming'>functional-programming (1)</a></li><li><a href='/blog/categories/html5'>html5 (2)</a></li><li><a href='/blog/categories/jquery'>jQuery (1)</a></li><li><a href='/blog/categories/migrated'>migrated (1)</a></li><li><a href='/blog/categories/node-js'>node.js (1)</a></li><li><a href='/blog/categories/ruby'>ruby (1)</a></li><li><a href='/blog/categories/silverlight'>silverlight (2)</a></li><li><a href='/blog/categories/subtle-patterns'>subtle-patterns (1)</a></li><li><a href='/blog/categories/testing'>testing (1)</a></li><li><a href='/blog/categories/twitter-bootstrap'>twitter-bootstrap (1)</a></li><li><a href='/blog/categories/watir'>WATIR (1)</a></li><li><a href='/blog/categories/xna'>XNA (2)</a></li></ul>
+      <ul id="category-list"><li><a href='/blog/categories/-net'>.NET (1)</a></li><li><a href='/blog/categories/3d'>3D (2)</a></li><li><a href='/blog/categories/blogging'>blogging (1)</a></li><li><a href='/blog/categories/code'>code (1)</a></li><li><a href='/blog/categories/css3'>css3 (1)</a></li><li><a href='/blog/categories/f-'>f# (1)</a></li><li><a href='/blog/categories/functional-programming'>functional-programming (1)</a></li><li><a href='/blog/categories/github'>github (1)</a></li><li><a href='/blog/categories/html5'>html5 (2)</a></li><li><a href='/blog/categories/javascript'>javascript (1)</a></li><li><a href='/blog/categories/jquery'>jQuery (1)</a></li><li><a href='/blog/categories/migrated'>migrated (1)</a></li><li><a href='/blog/categories/node-js'>node.js (1)</a></li><li><a href='/blog/categories/octopress'>octopress (1)</a></li><li><a href='/blog/categories/ruby'>ruby (1)</a></li><li><a href='/blog/categories/silverlight'>silverlight (2)</a></li><li><a href='/blog/categories/subtle-patterns'>subtle-patterns (1)</a></li><li><a href='/blog/categories/testing'>testing (1)</a></li><li><a href='/blog/categories/twitter-bootstrap'>twitter-bootstrap (1)</a></li><li><a href='/blog/categories/watir'>WATIR (1)</a></li><li><a href='/blog/categories/xna'>XNA (2)</a></li></ul>
       </section>
 <section>
 <h1>Ads</h1>
