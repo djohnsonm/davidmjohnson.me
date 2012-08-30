@@ -371,5 +371,24 @@ src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
 
 
 
+  <script type="text/javascript">
+    (function(){
+         var hn_like = document.createElement('iframe');
+             hn_like.frameborder="no";
+	     hn_like.scrolling="no";
+             hn_like.height="28px";
+             hn_like.width="115px";
+             hn_like.src = "http://hnlike.com/upvote.php?link="
+                    + encodeURIComponent(document.location)
+                    + "&title="
+                    + encodeURIComponent("Category: ruby");
+             hn_like.innerHTML="iframes not supported by your browser";
+        var twitter = document.getElementsByClassName("twitter-share-button")[0];
+	twitter.parentNode.insertBefore(hn_like, twitter);
+    })();
+  </script>
+
+
+
 </body>
 </html>

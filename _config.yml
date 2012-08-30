@@ -71,6 +71,9 @@ twitter_follow_button: true
 twitter_show_follower_count: false
 twitter_tweet_button: true
 
+#Hacker News
+hn_like_button: true
+
 #SO
 stackoverflow_user_name: dave
 stackoverflow_user_id: 453261
